@@ -1,3 +1,6 @@
+import '@/app/ui/global.css';
+import Navigation from './components/navigation';
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +8,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Navigation/>
+        {children}
+      </body>
     </html>
   );
 }
