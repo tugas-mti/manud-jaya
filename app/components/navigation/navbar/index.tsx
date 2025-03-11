@@ -3,13 +3,13 @@ import Link from "next/link";
 import Logo from "./Logo";
 import Button from "./Button";
 
-const Navbar = ({ toggle }: { toggle: () => void }) => {
+const Navbar = ({ isOpen,toggle }: {isOpen: boolean; toggle: () => void }) => {
   return (
     <>
       <div className="w-full h-20 bg-white sticky top-0 z-50">
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
-            <Logo />
+            <Logo isOpen={isOpen} toggle={toggle}/>
             <button
               type="button"
               className="inline-flex items-center md:hidden bg-gray-800"
