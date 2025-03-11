@@ -2,17 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-input[type='number'] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-input[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type='number']::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.rounded-list-item {
+    @apply hover:bg-black hover:text-white transition-colors duration-300 rounded-lg h-[48] w-[80];
+  }
+.link-items{
+    @apply block w-full h-full flex justify-center items-center;
 }

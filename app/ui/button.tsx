@@ -17,3 +17,10 @@ export function Button({ children, className, ...rest }: ButtonProps) {
     </button>
   );
 }
+
+const Buton = () => {
+  return (
+    <button className="h-12 rounded-lg bg-white font-bold px-5">Login</button>
+  );
+};
+export default Button;
