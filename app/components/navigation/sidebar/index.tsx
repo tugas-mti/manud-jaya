@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { JSX } from "react";
-
+import SearchBar from "../../searchbar";
 
 const Sidebar = ({
   isOpen,
@@ -36,12 +36,17 @@ const Sidebar = ({
         <ul className="sidebar-nav text-center leading-relaxed text-xl">
           <li>
             <Link href="/about" onClick={toggle}>
-              <p>About Us</p>
+              <p>About</p>
             </Link>
           </li>
           <li>
-            <Link href="/services" onClick={toggle}>
-              <p>Services</p>
+            <Link href="/programs" onClick={toggle}>
+              <p>Program(s)</p>
+            </Link>
+          </li>
+          <li>
+            <Link href="/gallery" onClick={toggle}>
+              <p>Gallery</p>
             </Link>
           </li>
           <li>
@@ -51,10 +56,11 @@ const Sidebar = ({
           </li>
           <li>
             <Link href="/signin" onClick={toggle}>
-              <p>Sign In</p>
+              <p>Login</p>
             </Link>
           </li>
         </ul>
+        <SearchBar/>
       </div>
     </>
   );

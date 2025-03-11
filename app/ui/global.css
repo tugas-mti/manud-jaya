@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.rounded-list-item {
+    @apply hover:bg-black hover:text-white transition-colors duration-300 rounded-lg h-[48] w-[80];
+  }
+.link-items{
+    @apply block w-full h-full flex justify-center items-center;
+}

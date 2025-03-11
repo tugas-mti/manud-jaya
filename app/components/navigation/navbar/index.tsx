@@ -12,7 +12,7 @@ const Navbar = ({ toggle }: { toggle: () => void }) => {
             <Logo />
             <button
               type="button"
-              className="inline-flex items-center md:hidden"
+              className="inline-flex items-center md:hidden bg-gray-800"
               onClick={toggle}
             >
               <svg
@@ -27,25 +27,37 @@ const Navbar = ({ toggle }: { toggle: () => void }) => {
                 />
               </svg>
             </button>
-            <ul className="hidden md:flex gap-x-6 text-black ">
-              <li>
-                <Link href="/about">
-                  <p>About Us</p>
-                </Link>
-              </li>
-              <li>
-                <Link href="/services">
-                  <p>Services</p>
-                </Link>
-              </li>
-              <li>
-                <Link href="/contacts">
-                  <p>Contacts</p>
-                </Link>
-              </li>
-            </ul>
-            <div className="hidden md:block">
-              <Button />
+            <div className="hidden md:flex gap-x-6 items-center">
+              <ul className="hidden md:flex gap-x-6 text-black ">
+                <li className="rounded-list-item">
+                  <Link href="/" className="link-items">
+                    Home
+                  </Link>
+                </li>
+                <li className="rounded-list-item">
+                  <Link href="/about" className="link-items">
+                    <p>About</p>
+                  </Link>
+                </li>
+                <li className="rounded-list-item">
+                  <Link href="/programs" className="link-items">
+                    <p>Program(s)</p>
+                  </Link>
+                </li>
+                <li className="rounded-list-item">
+                  <Link href="/gallery" className="link-items">
+                    <p>Gallery</p>
+                  </Link>
+                </li>
+                <li className="rounded-list-item">
+                  <Link href="/contacts" className="link-items">
+                    <p>Contact</p>
+                  </Link>
+                </li>
+              </ul>
+              <div className="hidden md:block">
+                <Button />
+              </div>
             </div>
           </div>
         </div>

@@ -36,13 +36,14 @@ const Logo = () => {
   return (
     <>
       <Link href="/" style={{ display: showButton ? "none" : "block" }}>
-        <Image
+        {/* <Image
           src="/images/logo.png"
-          alt="Logo"
+          alt="Manud Jaya"
           width="56"
           height="56"
           className="relative"
-        />
+        /> */}
+        <h1 className="font-bold">Manud Jaya</h1>
       </Link>
       <div
         style={{
