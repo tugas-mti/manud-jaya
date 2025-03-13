@@ -1,6 +1,9 @@
 import Image from "next/image";
 import SearchBar from "./components/searchbar";
+import Content from "./components/content";
 export default function Home() {
+  const text = "Manud Jaya Village is a hidden paradise in Kayangan Regency, Semesta Raya. This charming village offers vast green rice fields, lush hills, and crystal-clear rivers flowing amidst shady trees, making it the perfect escape from the hustle and bustle of the city. The cool and fresh air adds even more to the comfort.";
+  const header = "Manud Jaya Tourism Village";
   return (
     <>
       <div className="w-full ">
@@ -24,7 +27,9 @@ export default function Home() {
             </p>
             <SearchBar />
         </div>
-        <div className="h-screen bg-white"></div>
+        <div className="h-screen bg-white">
+          <Content header={header} text={text} image="/images/image1.jpg"/>
+        </div>
       </div>
     </>
   );
