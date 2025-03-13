@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { JSX } from "react";
 import SearchBar from "../../searchbar";
+import UserProfile from "../navbar/UserProfile";
 
 const Sidebar = ({
   isOpen,
@@ -54,12 +55,8 @@ const Sidebar = ({
               <p>Contacts</p>
             </Link>
           </li>
-          <li>
-            <Link href="/login" onClick={toggle}>
-              <p>Login</p>
-            </Link>
-          </li>
         </ul>
+        <UserProfile />
       </div>
     </>
   );
