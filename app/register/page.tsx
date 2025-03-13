@@ -26,7 +26,13 @@ const registerSchema = z.object({
     return age >= 10; // Minimum age requirement
   }, "You must be at least 10 years old"),
   email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+      "Password must contain at least one letter and one number"
+    ),
 });
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
