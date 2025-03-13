@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
+import { Suspense } from "react";
 
 const resetPasswordSchema = z
   .object({
@@ -48,7 +49,7 @@ async function resetPassword(data: ResetPasswordFormValues) {
   return response.json();
 }
 
-export default function Page() {
+function ResetPasswordForm() {
   const query = useSearchParams();
   const router = useRouter();
 
@@ -163,5 +164,13 @@ export default function Page() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
