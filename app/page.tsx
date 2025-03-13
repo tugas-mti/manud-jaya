@@ -8,7 +8,7 @@ export default function Home() {
         <div className="relative">
           <div className="relative w-full mx-auto overflow-hidden h-[200px] md:h-[100vh]">
             <Image
-              src="/images/background1.jpg"
+              src="/images/background1.webp"
               alt="BG"
               layout="fill"
               className="relative"

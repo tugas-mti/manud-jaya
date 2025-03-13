@@ -42,7 +42,7 @@ export default function Page() {
   return (
     <div
       className="flex items-center justify-center min-h-[calc(100vh-5rem)] bg-cover"
-      style={{ backgroundImage: "url('/images/background1.jpg')" }}
+      style={{ backgroundImage: "url('/images/background1.webp')" }}
     >
       <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-6 bg-opacity-70">
         <div>
