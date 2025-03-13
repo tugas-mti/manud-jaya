@@ -2,14 +2,21 @@ import React from "react";
 import Link from "next/link";
 import Logo from "./Logo";
 import Button from "./Button";
+import UserProfile from "./UserProfile";
 
-const Navbar = ({ isOpen,toggle }: {isOpen: boolean; toggle: () => void }) => {
+const Navbar = ({
+  isOpen,
+  toggle,
+}: {
+  isOpen: boolean;
+  toggle: () => void;
+}) => {
   return (
     <>
       <div className="w-full h-20 bg-white sticky top-0 z-50">
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
-            <Logo isOpen={isOpen} toggle={toggle}/>
+            <Logo isOpen={isOpen} toggle={toggle} />
             <button
               type="button"
               className="inline-flex items-center md:hidden bg-gray-800"
@@ -55,9 +62,7 @@ const Navbar = ({ isOpen,toggle }: {isOpen: boolean; toggle: () => void }) => {
                   </Link>
                 </li>
               </ul>
-              <div className="hidden md:block">
-                <Button />
-              </div>
+              <UserProfile />
             </div>
           </div>
         </div>
