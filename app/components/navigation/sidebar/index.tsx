@@ -60,7 +60,6 @@ const Sidebar = ({
             </Link>
           </li>
         </ul>
-        <SearchBar />
       </div>
     </>
   );
