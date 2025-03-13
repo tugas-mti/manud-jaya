@@ -1,5 +1,10 @@
-import '@/app/ui/global.css';
-import Navigation from './components/navigation';
+"use client";
+
+import { SessionProvider } from "next-auth/react";
+import { Toaster } from "sonner";
+import Navigation from "./components/navigation";
+
+import "@/app/ui/global.css";
 
 export default function RootLayout({
   children,
@@ -9,8 +14,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navigation/>
-        {children}
+        <SessionProvider>
+          <Toaster />
+          <Navigation />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

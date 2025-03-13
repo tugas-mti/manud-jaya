@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Logo from "./Logo";
 import Button from "./Button";
+import UserProfile from "./UserProfile";
 
 const Navbar = ({
   isOpen,
@@ -61,9 +62,7 @@ const Navbar = ({
                   </Link>
                 </li>
               </ul>
-              <div className="hidden md:block">
-                <Button />
-              </div>
+              <UserProfile />
             </div>
           </div>
         </div>
