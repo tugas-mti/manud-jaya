@@ -1,12 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Link as RouterLink } from "react-router-dom";
 
-const Logo = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) => {
-  // change between the logo and the button when the user scrolls
+
+const Logo = ({isOpen, toggle }: {isOpen:boolean; toggle: () => void }) => {
+
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (isOpen) {
-      toggle();
+    console.log(isOpen)
+    if(isOpen){
+      toggle()
     }
   };
 
