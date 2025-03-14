@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 .rounded-list-item {
-    @apply hover:bg-black hover:text-white transition-colors duration-300 rounded-lg h-[48] w-[80];
+    @apply hover:bg-black hover:text-white transition-colors duration-300 rounded-lg ;
+    height: 48px !important;
+    width : 80px !important;
   }
 .link-items{
     @apply block w-full h-full flex justify-center items-center;
