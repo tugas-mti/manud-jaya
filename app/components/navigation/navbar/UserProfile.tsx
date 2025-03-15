@@ -7,16 +7,11 @@ export default function UserProfile() {
   const { data: session, status } = useSession();
 
   return (
-    <div className="min-w-[5rem] flex items-center justify-between rounded-list-item">
-      {status === "unauthenticated" ? (
-        <Link className="link-items" href="/login">
-          Login
-        </Link>
-      ) : (
-        <Link className="link-items" href="/dashboard">
-          {session?.user?.name}
-        </Link>
-      )}
-    </div>
+    <Link
+      href={status === "unauthenticated" ? "/login" : "#"}
+      className="min-w-[5rem] hover:bg-black hover:text-white p-2 rounded-lg text-center cursor-pointer"
+    >
+      {status === "unauthenticated" ? "Login" : session?.user?.name}
+    </Link>
   );
 }
