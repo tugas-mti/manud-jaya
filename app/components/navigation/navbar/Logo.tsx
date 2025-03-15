@@ -1,14 +1,11 @@
 "use client";
 import Link from "next/link";
-import { Link as RouterLink } from "react-router-dom";
 
-
-const Logo = ({isOpen, toggle }: {isOpen:boolean; toggle: () => void }) => {
-
+const Logo = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) => {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    console.log(isOpen)
-    if(isOpen){
-      toggle()
+    console.log(isOpen);
+    if (isOpen) {
+      toggle();
     }
   };
 
