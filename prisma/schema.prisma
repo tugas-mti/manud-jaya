@@ -24,4 +24,5 @@ model User {
   idNumber             String?
   phoneNumber          String?
   dateOfBirth          DateTime?
+  isAdmin              Boolean   @default(false)
 }
