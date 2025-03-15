@@ -39,10 +39,9 @@ export async function POST(request: Request) {
       <a href="${process.env.NEXTAUTH_URL}/reset-password?token=${token}">Reset Password</a>
     `;
 
-    const sendMaiResponse = sendMail({
+    sendMail({
       to: email,
-      subject: "Reset your password",
-      text: "Click the link to reset your password",
+      subject: "Password Reset Request",
       html,
     });
 

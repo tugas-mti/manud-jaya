@@ -23,20 +23,23 @@ async function forgotPassword(data: { email: string | null }) {
 
 export default function Page() {
   const [error, setError] = useState<string | null>(null);
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    const response = await forgotPassword({
-      email: formData.get("email") as string,
-    });
+    try {
+      const response = await forgotPassword({
+        email: formData.get("email") as string,
+      });
 
-    if (response?.error) {
-      setError("Something went wrong");
-      return;
+      toast.success("Reset link sent to your email");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "An error occurred";
+
+      setError(message);
     }
-
-    toast.success("Reset link sent to your email");
   }
 
   return (
