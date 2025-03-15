@@ -68,17 +68,16 @@ export default function RegisterPage() {
   });
 
   const onSubmit = async (data: RegisterFormValues) => {
-    try {
-      await signUp(data);
-      toast.success("Account created successfully");
-
-      router.replace("/login");
-      router.refresh();
-    } catch (err) {
-      setFormError("root", {
-        message: err instanceof Error ? err.message : "Failed to register",
-      });
-    }
+    toast.promise(signUp(data), {
+      loading: "Creating account...",
+      success: () => {
+        router.replace("/login");
+        router.refresh();
+        return "Account created successfully";
+      },
+      error: (error) =>
+        error instanceof Error ? error.message : "Failed to register",
+    });
   };
 
   useEffect(() => {

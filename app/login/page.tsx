@@ -29,30 +29,27 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
-    setError: setFormError,
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginFormValues) => {
-    const response = await signIn("credentials", {
+    const response = signIn("credentials", {
       email: data.email,
       password: data.password,
       redirect: false,
     });
 
-    if (response?.error) {
-      setFormError("root", {
-        message: "Invalid credentials",
-      });
-      return;
-    }
-
-    if (response?.ok) {
-      toast.success(`Login successful`);
-      router.replace("/dashboard");
-    }
+    toast.promise(response, {
+      loading: "Loading...",
+      success: (data) => {
+        return `Login successful`;
+      },
+      error: (error) => {
+        return error?.message || "Incorrect email or password";
+      },
+    });
   };
 
   useEffect(() => {
@@ -123,8 +120,9 @@ export default function LoginPage() {
             <button
               type="submit"
               className="relative block w-full rounded-md bg-gray-200 text-black p-2"
+              disabled={session.status === "loading"}
             >
-              Sign in
+              {session.status === "loading" ? "Loading..." : "Sign in"}
             </button>
             <Link
               href="/forgot-password"

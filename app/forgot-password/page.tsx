@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { toast } from "sonner";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 
 async function forgotPassword(data: { email: string | null }) {
   const response = await fetch("/api/auth/forgot-password", {
@@ -22,24 +22,21 @@ async function forgotPassword(data: { email: string | null }) {
 }
 
 export default function Page() {
-  const [error, setError] = useState<string | null>(null);
-
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    try {
-      const response = await forgotPassword({
+    toast.promise(
+      forgotPassword({
         email: formData.get("email") as string,
-      });
-
-      toast.success("Reset link sent to your email");
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "An error occurred";
-
-      setError(message);
-    }
+      }),
+      {
+        loading: "Sending reset link...",
+        success: "Reset link sent to your email",
+        error: (error) =>
+          error instanceof Error ? error.message : "An error occurred",
+      }
+    );
   }
 
   return (
@@ -64,9 +61,6 @@ export default function Page() {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="rounded-md bg-red-50 p-4 text-red-500">{error}</div>
-          )}
           <div className="space-y-4 rounded-md shadow-sm">
             <div>
               <label htmlFor="email">Enter email address</label>
