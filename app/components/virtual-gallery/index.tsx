@@ -43,7 +43,7 @@ export default function VirtualGallery() {
             </div>
           </div>
         </div>
-        <div className="absolute left-0 right-0 bottom-[-120] z-30 flex items-center justify-center">
+        <div className="absolute left-0 right-0 bottom-[-120px] z-30 flex items-center justify-center">
           <iframe
             className="rounded-lg border-4 border-white"
             width="480"
