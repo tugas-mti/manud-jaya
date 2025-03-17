@@ -42,7 +42,7 @@ export default async function RootLayout({
 
   return (
     <html lang="id">
-      <body className={`${jakartaSans.variable}  antialiased`}>
+      <body className={`${jakartaSans.className}  antialiased`}>
         <SessionProvider session={session}>
           <Toaster position="top-center" richColors />
           <Navigation />
