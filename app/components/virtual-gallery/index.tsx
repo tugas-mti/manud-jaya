@@ -1,11 +1,11 @@
+import Image from "next/image";
 import Gallery from "../gallery";
 
 export default function VirtualGallery() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div>
       <div className="relative shadow-lg">
         <div className="relative w-full h-[400px] bg-gradient-to-b from-emerald-600 to-emerald-400 overflow-hidden">
-          {/* SVG Wave */}
           <div className="absolute top-0 left-0 w-full">
             <svg
               className="w-full h-20 fill-white"
@@ -22,10 +22,13 @@ export default function VirtualGallery() {
           </div>
 
           <div className="absolute inset-0 z-10 mix-blend-overlay">
-            <img
+            <Image
               src="/images/background1.webp"
-              alt="Hero Image"
-              className="w-full h-full object-cover opacity-50"
+              alt="BG"
+              layout="fill"
+              className="relative"
+              objectFit="cover"
+              objectPosition="center"
             />
           </div>
 
