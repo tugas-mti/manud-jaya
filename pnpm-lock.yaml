@@ -62,6 +62,9 @@ importers:
       react-hook-form:
         specifier: ^7.54.2
         version: 7.54.2(react@19.0.0)
+      react-photo-album:
+        specifier: ^3.0.2
+        version: 3.0.2(@types/react@19.0.7)(react@19.0.0)
       sonner:
         specifier: ^2.0.1
         version: 2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -77,6 +80,9 @@ importers:
       use-debounce:
         specifier: ^10.0.4
         version: 10.0.4(react@19.0.0)
+      yet-another-react-lightbox:
+        specifier: ^3.21.8
+        version: 3.21.8(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       zod:
         specifier: ^3.24.1
         version: 3.24.1
@@ -1092,6 +1098,16 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
+  react-photo-album@3.0.2:
+    resolution: {integrity: sha512-w3+8i6aj9l1jRfcubgVbAlBGSdtiXcqWdcwZcH4/Bavc+v7X7h+S3TkQ723pvDABjhaaxS168g9ECEBP6xnKrQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@types/react': '>=18'
+      react: '>=18'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
   react@19.0.0:
     resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
     engines: {node: '>=0.10.0'}
@@ -1272,6 +1288,20 @@ packages:
     resolution: {integrity: sha512-+hSoy/QHluxmC9kCIJyL/uyFmLmc+e5CFR5Wa+bpIhIj85LVb9ZH2nVnqrHoSvKogwODv0ClqZkmiSSaIH5LTA==}
     engines: {node: '>= 14'}
     hasBin: true
+
+  yet-another-react-lightbox@3.21.8:
+    resolution: {integrity: sha512-8DnjpSmWF+WjGXX+NIJx0V/naUhUYxLt6RIBJZoQ4y1GJVKwiUO2RuRvUBvYQTwAwFqwhJSvxfIhCU3VyCj9WQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@types/react': ^16 || ^17 || ^18 || ^19
+      '@types/react-dom': ^16 || ^17 || ^18 || ^19
+      react: ^16.8.0 || ^17 || ^18 || ^19
+      react-dom: ^16.8.0 || ^17 || ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
 
   zod@3.24.1:
     resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
@@ -2122,6 +2152,12 @@ snapshots:
     dependencies:
       react: 19.0.0
 
+  react-photo-album@3.0.2(@types/react@19.0.7)(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+    optionalDependencies:
+      '@types/react': 19.0.7
+
   react@19.0.0: {}
 
   read-cache@1.0.0:
@@ -2321,5 +2357,13 @@ snapshots:
   yallist@4.0.0: {}
 
   yaml@2.7.0: {}
+
+  yet-another-react-lightbox@3.21.8(@types/react-dom@19.0.3(@types/react@19.0.7))(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+    optionalDependencies:
+      '@types/react': 19.0.7
+      '@types/react-dom': 19.0.3(@types/react@19.0.7)
 
   zod@3.24.1: {}
