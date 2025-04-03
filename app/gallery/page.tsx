@@ -17,9 +17,9 @@ type GalleryResponse = {
 export default async function GalleryPage({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page: string }>;
 }) {
-  const currentPage = Number(searchParams.page) || 1;
+  const currentPage = Number((await searchParams).page) || 1;
   const limit = 9;
 
   async function fetchGalleries(page: number): Promise<GalleryResponse> {

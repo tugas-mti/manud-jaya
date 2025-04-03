@@ -4,13 +4,12 @@ import { prisma } from "@/lib/prisma";
 // GET single news
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const id = (await params).id;
   try {
     const news = await prisma.news.findUnique({
-      where: {
-        id: params.id,
-      },
+      where: { id },
       include: {
         Comment: {
           include: {
@@ -37,12 +36,13 @@ export async function GET(
 // PUT update news
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const id = (await params).id;
   try {
     const body = await request.json();
     const news = await prisma.news.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title: body.title,
         content: body.content,
@@ -59,11 +59,12 @@ export async function PUT(
 // DELETE news
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const id = (await params).id;
   try {
     await prisma.news.delete({
-      where: { id: params.id },
+      where: { id },
     });
     return NextResponse.json({ message: "News deleted" });
   } catch (error) {

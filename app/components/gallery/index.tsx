@@ -61,7 +61,7 @@ type Photo = {
 };
 
 type GalleryProps = {
-  photos: Array<Photo>;
+  photos?: Array<Photo>;
   showAlt?: boolean;
 };
 

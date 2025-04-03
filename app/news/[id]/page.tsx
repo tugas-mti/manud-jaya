@@ -25,9 +25,10 @@ async function getNews(): Promise<{ data: News[] }> {
 export default async function NewsDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const news = await getNewsDetail(params.id);
+  const id = (await params).id;
+  const news = await getNewsDetail(id);
   const otherNews = await getNews();
 
   return (

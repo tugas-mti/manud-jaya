@@ -4,12 +4,13 @@ import { prisma } from "@/lib/prisma";
 // PUT update comment
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const id = (await params).id;
   try {
     const body = await request.json();
     const comment = await prisma.comment.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         content: body.content,
       },
@@ -29,11 +30,12 @@ export async function PUT(
 // DELETE comment
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const id = (await params).id;
   try {
     await prisma.comment.delete({
-      where: { id: params.id },
+      where: { id },
     });
     return NextResponse.json({ message: "Comment deleted" });
   } catch (error) {
