@@ -90,18 +90,8 @@ async function GoogleMapsReview() {
   return (
     <div className="bg-gray-100">
       <div className="container mx-auto p-4">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          Come and visit Manud Jaya
-        </h2>
-        <p className="text-center text-gray-600 mb-8">
-          Walk the unforgettable path of the Manud Jaya, and experience the
-          beauty of this remarkable place.
-        </p>
-        <div className="flex items-center justify-center space-x-2 mb-8">
-          <span className="text-3xl font-bold text-yellow-500">
-            ⭐️⭐️⭐️⭐️⭐️
-          </span>
-        </div>
+        <h2 className="text-3xl font-bold mb-8">Review your experiences</h2>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {MOCK_REVIEWS?.map((review, index) => (
             <div key={index} className="bg-white p-4 rounded-lg shadow">

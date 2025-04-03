@@ -6,6 +6,7 @@ import SessionProvider from "@/providers/SessionProvider";
 import "@/app/ui/global.css";
 import { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import Footer from "./components/footer";
 
 const jakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -47,6 +48,7 @@ export default async function RootLayout({
           <Toaster position="top-center" richColors />
           <Navigation />
           {children}
+          <Footer />
         </SessionProvider>
       </body>
     </html>

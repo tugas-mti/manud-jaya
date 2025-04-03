@@ -25,4 +25,42 @@ model User {
   phoneNumber          String?
   dateOfBirth          DateTime?
   isAdmin              Boolean   @default(false)
+  Comment              Comment[]
+  News                 News[]
+}
+
+model News {
+  id          String    @id @default(cuid())
+  type        String    @default("news") // news, event, festival
+  title       String
+  content     String
+  image       String
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  createdById String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Comment     Comment[]
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String
+  newsId    String
+  User      User      @relation(fields: [userId], references: [id])
+  News      News      @relation(fields: [newsId], references: [id])
+  commentId String?
+  Comment   Comment[] @relation("CommentToComment")
+  parent    Comment?  @relation("CommentToComment", fields: [commentId], references: [id])
+}
+
+model Gallery {
+  id          String   @id @default(cuid())
+  title       String
+  image       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

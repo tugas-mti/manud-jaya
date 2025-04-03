@@ -40,8 +40,8 @@ const Sidebar = ({
             </Link>
           </li>
           <li>
-            <Link href="/programs" onClick={toggle}>
-              <p>Program(s)</p>
+            <Link href="/news" onClick={toggle}>
+              <p>News</p>
             </Link>
           </li>
           <li>
@@ -60,10 +60,8 @@ const Sidebar = ({
                 <UserProfile />
               </button>
             </div>
-            
           </li>
         </ul>
-        
       </div>
     </>
   );

@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import Logo from "./Logo";
-import Button from "./Button";
 import UserProfile from "./UserProfile";
 
 const Navbar = ({
@@ -47,8 +46,8 @@ const Navbar = ({
                   </Link>
                 </li>
                 <li className="rounded-list-item">
-                  <Link href="/programs" className="link-items">
-                    <p>Program(s)</p>
+                  <Link href="/news" className="link-items">
+                    <p>News</p>
                   </Link>
                 </li>
                 <li className="rounded-list-item">
