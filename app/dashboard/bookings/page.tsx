@@ -5,6 +5,7 @@ import Image from "next/image";
 import ChangeStatus from "./change-status";
 import Drawer from "@/app/components/drawer";
 import { Receipt } from "@/app/components/receipt";
+import { formatCurrency } from "@/lib/utils";
 
 export type Booking = Prisma.BookingGetPayload<{
   include: {
@@ -107,11 +108,18 @@ export default async function Bookingpage({
                       <span className="text-lg font-semibold">
                         {record.tour.title}
                       </span>
-                      <p className="text-gray-500">{record.tour.price}</p>
+                      <p className="text-gray-500">
+                        {record.guests} x {formatCurrency(record.tour.price)}
+                      </p>
                     </div>
                   </div>
                 );
               },
+            },
+            {
+              title: "Total Price",
+              dataIndex: "price",
+              render: (value) => formatCurrency(value),
             },
             {
               title: "Date",

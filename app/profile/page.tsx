@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Drawer from "../components/drawer";
 import { Receipt } from "../components/receipt";
+import { formatCurrency } from "@/lib/utils";
 
 export type Booking = Prisma.BookingGetPayload<{
   include: {
@@ -98,17 +99,21 @@ export default async function ProfilePage() {
                         className="rounded-lg mr-4"
                       />
                       <div>
-                        <Link
-                          href={`/tour/${record.tour.id}`}
-                          className="text-lg font-semibold hover:underline"
-                        >
+                        <span className="text-lg font-semibold">
                           {record.tour.title}
-                        </Link>
-                        <p className="text-gray-500">{record.tour.price}</p>
+                        </span>
+                        <p className="text-gray-500">
+                          {record.guests} x {formatCurrency(record.tour.price)}
+                        </p>
                       </div>
                     </div>
                   );
                 },
+              },
+              {
+                title: "Total Price",
+                dataIndex: "price",
+                render: (value) => formatCurrency(value),
               },
               {
                 title: "Date",

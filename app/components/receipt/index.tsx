@@ -102,7 +102,7 @@ export function Receipt({ booking }: BookingProps) {
             <div className="flex">
               <span className="w-24 text-gray-700">Price:</span>
               <span className="font-medium">
-                Rp {formatCurrency(booking.tour.price)}
+                Rp {formatCurrency(booking.price)}
               </span>
             </div>
             <div className="flex">

@@ -70,7 +70,7 @@ export async function POST(
             <li>Date: ${booking.date}</li>
             <li>Time Slot: ${booking.timeSlot}</li>
             <li>Guests: ${booking.guests}</li>
-            <li>Total Price: $${totalPrice}</li>
+            <li>Total Price: ${totalPrice}</li>
           </ul>
 
           <p> Please bring your booking confirmation email to the tour. Payment can be made on the day of the tour.</p>
