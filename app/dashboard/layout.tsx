@@ -21,8 +21,8 @@ const menuItems: MenuItem[] = [
     text: "Galleries",
   },
   {
-    href: "/dashboard/settings",
-    text: "Settings",
+    href: "/dashboard/bookings",
+    text: "Bookings",
   },
 ];
 

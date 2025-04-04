@@ -50,15 +50,18 @@ const Sidebar = ({
             </Link>
           </li>
           <li>
+            <Link href="/tour" onClick={toggle}>
+              <p>Tour</p>
+            </Link>
+          </li>
+          <li>
             <Link href="/contacts" onClick={toggle}>
               <p>Contacts</p>
             </Link>
           </li>
           <li>
             <div className="flex justify-center">
-              <button onClick={toggle}>
-                <UserProfile />
-              </button>
+              <UserProfile />
             </div>
           </li>
         </ul>

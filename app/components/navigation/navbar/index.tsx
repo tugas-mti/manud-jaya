@@ -56,6 +56,11 @@ const Navbar = ({
                   </Link>
                 </li>
                 <li className="rounded-list-item">
+                  <Link href="/tour" className="link-items">
+                    <p>Tour</p>
+                  </Link>
+                </li>
+                <li className="rounded-list-item">
                   <Link href="/contacts" className="link-items">
                     <p>Contact</p>
                   </Link>

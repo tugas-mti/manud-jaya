@@ -11,11 +11,19 @@ export async function POST(
     const body = await request.json();
 
     // Validate required fields
-    if (!body.userId || !body.date || !body.timeSlot || !body.guests) {
+    if (!body.userEmail || !body.date || !body.timeSlot || !body.guests) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
+    }
+
+    // Check if user exists
+    const user = await prisma.user.findUnique({
+      where: { email: body.userEmail },
+    });
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     // Get tour to check availability and calculate price
@@ -41,7 +49,7 @@ export async function POST(
     // Create booking
     const booking = await prisma.booking.create({
       data: {
-        userId: body.userId,
+        userId: user.id,
         tourId: tourId,
         date: new Date(body.date),
         timeSlot: body.timeSlot as TimeSlot,

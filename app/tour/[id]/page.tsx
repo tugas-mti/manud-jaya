@@ -1,6 +1,7 @@
-import { MessageCircle, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { type Tour as TourType } from "../../components/tour-card";
 import Image from "next/image";
+import TourBooking from "@/app/components/tour-booking";
 
 function calculateAverageRating(reviews: { rating: number }[]): number {
   if (reviews.length === 0) return 0;
@@ -311,86 +312,7 @@ export default async function TourDetailPage({
             </div>
           </div>
 
-          <div>
-            <div className="lg:sticky lg:top-24 rounded-lg border border-gray-200 p-6 shadow-sm">
-              <h2 className="mb-4 text-lg font-bold">Booking</h2>
-
-              {/* Date Selection */}
-              <div className="mb-4">
-                <label className="mb-1 block text-sm font-medium text-gray-700">
-                  Date
-                </label>
-                <div className="relative">
-                  <input
-                    type="date"
-                    placeholder="01/01/2025"
-                    className="w-full rounded-md border border-gray-300 p-2 text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <label className="mb-1 block text-sm font-medium text-gray-700">
-                  Time Slot
-                </label>
-                <div className="relative">
-                  <select className="w-full rounded-md border border-gray-300 p-2 pr-10 text-sm">
-                    <option value="MORNING">Morning</option>
-                    <option value="AFTERNOON">Afternoon</option>
-                    <option value="EVENING">Evening</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Guests Selection */}
-              <div className="mb-6">
-                <label className="mb-1 block text-sm font-medium text-gray-700">
-                  No. of Guest
-                </label>
-                <div className="relative">
-                  <select className="w-full appearance-none rounded-md border border-gray-300 p-2 text-sm">
-                    {Array.from(
-                      { length: tour.maxGuests - tour.minGuests + 1 },
-                      (_, i) => tour.minGuests + i
-                    ).map((num) => (
-                      <option key={num} value={num}>
-                        {num} {num === 1 ? "adult" : "adults"}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="mb-4 text-center">
-                <div className="text-2xl font-bold text-green-600">
-                  {formatPrice(tour.price, tour.currency)}
-                  <span className="text-sm text-gray-500">/person</span>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <button className="w-full rounded-md bg-green-600 py-2 text-sm font-medium text-white hover:bg-green-700">
-                  Confirm Booking
-                </button>
-                <button className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                  <MessageCircle className="h-4 w-4" />
-                  Share This Activity
-                </button>
-              </div>
-              <div className="mt-4 text-xs text-gray-500">
-                You must be logged in to book this tour. If you don't have an
-                account, please{" "}
-                <a href="/register" className="text-green-600 hover:underline">
-                  register
-                </a>{" "}
-                or{" "}
-                <a href="/login" className="text-green-600 hover:underline">
-                  login
-                </a>{" "}
-                to your account.
-              </div>
-            </div>
-          </div>
+          <TourBooking tour={tour} />
         </div>
       </main>
     </div>
