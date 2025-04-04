@@ -21,7 +21,7 @@ export default function UserProfile() {
           },
         ]}
       >
-        {session?.user.name}
+        {session?.user?.name}
       </Dropdown>
     );
   }
