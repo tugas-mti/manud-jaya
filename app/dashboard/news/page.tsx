@@ -1,9 +1,9 @@
 import Pagination from "@/app/components/pagination";
 import Table from "@/app/components/table";
-import { User as UserType } from "@prisma/client";
+import { News as NewsType } from "@prisma/client";
 
-type UserResponse = {
-  data: UserType[];
+type NewsResponse = {
+  data: NewsType[];
   meta: {
     total: number;
     page: number;
@@ -11,7 +11,7 @@ type UserResponse = {
   };
 };
 
-export default async function UsersPage({
+export default async function NewsPage({
   searchParams,
 }: {
   searchParams: Promise<{ page: string }>;
@@ -19,20 +19,20 @@ export default async function UsersPage({
   const currentPage = Number((await searchParams).page) || 1;
   const limit = 20;
 
-  async function fetchGalleries(page: number): Promise<UserResponse> {
-    const url = new URL("/api/users", process.env.NEXT_PUBLIC_API_URL);
+  async function fetchGalleries(page: number): Promise<NewsResponse> {
+    const url = new URL("/api/news", process.env.NEXT_PUBLIC_API_URL);
     url.searchParams.append("page", String(page));
     url.searchParams.append("limit", String(limit));
 
     const res = await fetch(url);
     if (!res.ok) {
-      throw new Error("Failed to fetch users");
+      throw new Error("Failed to fetch news");
     }
 
     return res.json();
   }
 
-  const { data: users, meta } = await fetchGalleries(currentPage);
+  const { data: news, meta } = await fetchGalleries(currentPage);
   const totalPages = Math.ceil(meta.total / limit);
 
   return (
@@ -47,26 +47,36 @@ export default async function UsersPage({
             },
             {
               title: "Name",
-              dataIndex: "name",
+              dataIndex: "title",
             },
             {
               title: "Email",
-              dataIndex: "email",
+              dataIndex: "type",
             },
             {
-              title: "Is Admin",
-              dataIndex: "isAdmin",
-              render: (value) => (value ? "Yes" : "No"),
+              title: "Action",
+              dataIndex: "id",
+              key: "action",
+              render: (value, record) => (
+                <div className="space-x-2">
+                  <a
+                    href={`/dashboard/news/${value}`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    Detail
+                  </a>
+                </div>
+              ),
             },
           ]}
-          dataSource={users}
+          dataSource={news}
         />
       </div>
       <div className="mt-8 flex justify-center">
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          basePath="/dashboard/users"
+          basePath="/dashboard/news"
         />
       </div>
     </div>

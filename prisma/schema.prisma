@@ -27,6 +27,8 @@ model User {
   isAdmin              Boolean   @default(false)
   Comment              Comment[]
   News                 News[]
+  Review               Review[]
+  Booking              Booking[]
 }
 
 model News {
@@ -63,4 +65,120 @@ model Gallery {
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Tour {
+  id                 String        @id @default(cuid())
+  title              String
+  slug               String        @unique
+  description        String
+  duration           Int // in minutes or hours
+  location           Location      @relation(fields: [locationId], references: [id])
+  locationId         String
+  price              Float
+  currency           String // e.g., USD, IDR
+  language           String // e.g., "English"
+  minGuests          Int
+  maxGuests          Int
+  cancellationPolicy String
+  images             Image[]
+  activities         Activity[]
+  inclusions         Inclusion[]
+  exclusions         Exclusion[]
+  safetyInfo         SafetyInfo[]
+  reviews            Review[]
+  category           TourCategory? @relation(fields: [categoryId], references: [id])
+  categoryId         String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  Booking            Booking[]
+}
+
+model Location {
+  id        String @id @default(cuid())
+  name      String
+  latitude  Float?
+  longitude Float?
+  tours     Tour[]
+}
+
+model Image {
+  id      String  @id @default(cuid())
+  url     String
+  altText String?
+  tour    Tour    @relation(fields: [tourId], references: [id])
+  tourId  String
+}
+
+model Activity {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  tour        Tour   @relation(fields: [tourId], references: [id])
+  tourId      String
+}
+
+model Inclusion {
+  id          String @id @default(cuid())
+  description String
+  tour        Tour   @relation(fields: [tourId], references: [id])
+  tourId      String
+}
+
+model Exclusion {
+  id          String @id @default(cuid())
+  description String
+  tour        Tour   @relation(fields: [tourId], references: [id])
+  tourId      String
+}
+
+model SafetyInfo {
+  id          String @id @default(cuid())
+  description String
+  tour        Tour   @relation(fields: [tourId], references: [id])
+  tourId      String
+}
+
+model TourCategory {
+  id    String @id @default(cuid())
+  name  String
+  tours Tour[]
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  tour      Tour     @relation(fields: [tourId], references: [id])
+  tourId    String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum TimeSlot {
+  MORNING
+  AFTERNOON
+  EVENING
+}
+
+model Booking {
+  id        String        @id @default(cuid())
+  user      User          @relation(fields: [userId], references: [id])
+  userId    String
+  tour      Tour          @relation(fields: [tourId], references: [id])
+  tourId    String
+  date      DateTime
+  timeSlot  TimeSlot
+  guests    Int
+  price     Float
+  status    BookingStatus @default(PENDING)
+  createdAt DateTime      @default(now())
 }

@@ -5,7 +5,7 @@ import Pagination from "../components/pagination";
 import { News as NewsType } from "@prisma/client";
 import Link from "next/link";
 
-type GalleryRespsonse = {
+type NewsResponse = {
   data: NewsType[];
   meta: {
     total: number;
@@ -22,7 +22,7 @@ export default async function NewsPage({
   const currentPage = Number((await searchParams).page) || 1;
   const limit = 10;
 
-  async function fetchGalleries(page: number): Promise<GalleryRespsonse> {
+  async function fetchNews(page: number): Promise<NewsResponse> {
     const url = new URL("/api/news", process.env.NEXT_PUBLIC_API_URL);
     url.searchParams.append("page", String(page));
     url.searchParams.append("limit", String(limit));
@@ -35,7 +35,7 @@ export default async function NewsPage({
     return res.json();
   }
 
-  const { data: news, meta } = await fetchGalleries(currentPage);
+  const { data: news, meta } = await fetchNews(currentPage);
   const headline = news?.[0];
   const otherNews = news.length > 1 ? news.slice(1) : [];
 
@@ -53,19 +53,22 @@ export default async function NewsPage({
             height={400}
             className="rounded shadow-lg mb-4 w-full md:h-[520px] h-[240px] object-cover"
           />
-          <div className="absolute md:bottom-4 md:left-4 bottom-0 left-0 text-white bg-black bg-opacity-50 p-2 rounded">
-            <h2 className="text-2xl font-semibold">{headline.title}</h2>
-            <div className="flex space-x-4">
-              <span>
-                {headline.type.charAt(0).toUpperCase() + headline.type.slice(1)}
-              </span>
-              <span>
-                {new Date(headline.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
+          <div>
+            <div className="absolute  bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 text-white rounded-b w-full">
+              <h2 className="text-2xl font-semibold">{headline.title}</h2>
+              <div className="flex space-x-4">
+                <span>
+                  {headline.type.charAt(0).toUpperCase() +
+                    headline.type.slice(1)}
+                </span>
+                <span>
+                  {new Date(headline.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
             </div>
           </div>
         </Link>

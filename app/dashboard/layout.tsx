@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-import DashboardLayout, { MenuItem } from "@/components/dashboard-layout";
+import DashboardLayout, { MenuItem } from "@/app/components/dashboard-layout";
 
 const menuItems: MenuItem[] = [
   {
@@ -11,6 +11,14 @@ const menuItems: MenuItem[] = [
   {
     href: "/dashboard/users",
     text: "Users",
+  },
+  {
+    href: "/dashboard/news",
+    text: "News",
+  },
+  {
+    href: "/dashboard/galleries",
+    text: "Galleries",
   },
   {
     href: "/dashboard/settings",

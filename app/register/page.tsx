@@ -82,7 +82,7 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (session.status === "authenticated") {
-      router.replace("/dashboard");
+      router.replace("/");
     }
   }, [session]);
 

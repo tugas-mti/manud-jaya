@@ -54,7 +54,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (session.status === "authenticated") {
-      router.replace("/dashboard");
+      router.replace("/");
     }
   }, [session]);
 

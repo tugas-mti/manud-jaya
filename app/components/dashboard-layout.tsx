@@ -5,7 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import SignOutButton from "@/components/sign-out-button";
+import SignOutButton from "@/app/components/sign-out-button";
 
 export interface MenuItem {
   href: string;
@@ -25,17 +25,15 @@ export default function DashboardLayout({
 
   return (
     <div className="flex h-[calc(100vh-5rem)] w-full overflow-hidden bg-gray-50">
-      {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-gray-800/50 lg:hidden"
+          className="fixed inset-0 z-20 bg-gray-800/50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 mt-20 w-64 transform border-r border-gray-200 bg-white transition-transform duration-200 ease-in-out lg:static lg:mt-0 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-20 mt-20 w-64 transform border-r border-gray-200 bg-white transition-transform duration-200 ease-in-out lg:static lg:mt-0 lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
