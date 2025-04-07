@@ -2,6 +2,7 @@ import { Toaster } from "sonner";
 import Navigation from "./components/navigation";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@/providers/SessionProvider";
+import Footer from "./components/footer";
 
 import "@/app/ui/global.css";
 import { Metadata } from "next";
@@ -47,6 +48,7 @@ export default async function RootLayout({
           <Toaster />
           <Navigation />
           {children}
+          <Footer/>
         </SessionProvider>
       </body>
     </html>

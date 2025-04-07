@@ -6,7 +6,7 @@ export default function Home() {
   const header = "Manud Jaya Tourism Village";
   return (
     <>
-      <div className="w-full ">
+      <div className="w-full">
           <div className="relative w-full mx-auto overflow-hidden h-[200px] md:h-[100vh]">
             <Image
               src="/images/background1.webp"
@@ -24,8 +24,9 @@ export default function Home() {
               Beauty and a Tranquil Atmosphere
             </p>
             <SearchBar />
-          </div>
-        <div className="h-screen bg-white">
+        </div>
+        <div className=" bg-white relative justify-">
+          <Content header={header} text={text} image="/images/image1.jpg"/>
           <Content header={header} text={text} image="/images/image1.jpg"/>
         </div>
       </div>
