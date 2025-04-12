@@ -38,10 +38,6 @@ export default async function TourPage({
   const { data: tours, meta } = await fetchTours(currentPage);
   const totalPages = Math.ceil(meta.total / limit);
 
-  const handleNavigate = (id: string) => {
-    window.location.href = `/tour/${id}`;
-  };
-
   return (
     <div>
       <div className="relative w-full mx-auto overflow-hidden min-h-[240px] mb-8">

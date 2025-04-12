@@ -3,6 +3,8 @@ import SearchBar from "./components/searchbar";
 import Content from "./components/content";
 import GoogleMapsReview from "./components/google-maps-review";
 import VirtualGallery from "./components/virtual-gallery";
+import NewsFeed from "./components/news-feed";
+import TourFeed from "./components/tour-feed";
 export default function Home() {
   const text =
     "Manud Jaya Village is a hidden paradise in Kayangan Regency, Semesta Raya. This charming village offers vast green rice fields, lush hills, and crystal-clear rivers flowing amidst shady trees, making it the perfect escape from the hustle and bustle of the city. The cool and fresh air adds even more to the comfort.";
@@ -32,6 +34,8 @@ export default function Home() {
           <Content header={header} text={text} image="/images/image1.jpg" />
         </div>
         <VirtualGallery />
+        <NewsFeed />
+        <TourFeed />
         <GoogleMapsReview />
       </div>
     </>
