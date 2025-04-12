@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// GET all tours with pagination
+// GET all accommodations with pagination
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -9,15 +9,10 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get("limit") || "10");
     const skip = (page - 1) * limit;
 
-    const tours = await prisma.tour.findMany({
+    const accommodations = await prisma.accommodation.findMany({
       include: {
         location: true,
-        category: true,
         images: true,
-        activities: true,
-        inclusions: true,
-        exclusions: true,
-        safetyInfo: true,
         reviews: {
           include: {
             user: {
@@ -33,16 +28,16 @@ export async function GET(request: Request) {
       skip: skip,
     });
 
-    const total = await prisma.tour.count();
+    const total = await prisma.accommodation.count();
 
     return NextResponse.json({
-      data: tours,
+      data: accommodations,
       meta: { total, page, limit },
     });
   } catch (error) {
-    console.error("Error fetching tours:", error);
+    console.error("Error fetching accommodations:", error);
     return NextResponse.json(
-      { error: "Error fetching tours" },
+      { error: "Error fetching accommodations" },
       { status: 500 }
     );
   }

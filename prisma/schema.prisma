@@ -11,24 +11,25 @@ datasource db {
 }
 
 model User {
-  id                   String    @id @default(cuid())
+  id                   String                 @id @default(cuid())
   name                 String?
-  email                String?   @unique
+  email                String?                @unique
   password             String?
   emailVerified        DateTime?
   image                String?
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
   resetPasswordToken   String?
   resetPasswordExpires DateTime?
   idNumber             String?
   phoneNumber          String?
   dateOfBirth          DateTime?
-  isAdmin              Boolean   @default(false)
+  isAdmin              Boolean                @default(false)
   Comment              Comment[]
   News                 News[]
   Review               Review[]
   Booking              Booking[]
+  BookingAccommodation BookingAccommodation[]
 }
 
 model News {
@@ -95,19 +96,22 @@ model Tour {
 }
 
 model Location {
-  id        String @id @default(cuid())
-  name      String
-  latitude  Float?
-  longitude Float?
-  tours     Tour[]
+  id            String          @id @default(cuid())
+  name          String
+  latitude      Float?
+  longitude     Float?
+  tours         Tour[]
+  accommodation Accommodation[]
 }
 
 model Image {
-  id      String  @id @default(cuid())
-  url     String
-  altText String?
-  tour    Tour    @relation(fields: [tourId], references: [id])
-  tourId  String
+  id              String         @id @default(cuid())
+  url             String
+  altText         String?
+  tour            Tour?          @relation(fields: [tourId], references: [id])
+  tourId          String?
+  accommodation   Accommodation? @relation(fields: [accommodationId], references: [id])
+  accommodationId String?
 }
 
 model Activity {
@@ -146,14 +150,35 @@ model TourCategory {
 }
 
 model Review {
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  tour      Tour     @relation(fields: [tourId], references: [id])
-  tourId    String
-  rating    Int
-  comment   String
-  createdAt DateTime @default(now())
+  id              String         @id @default(cuid())
+  rating          Int
+  comment         String
+  createdAt       DateTime       @default(now())
+  accommodation   Accommodation? @relation(fields: [accommodationId], references: [id])
+  accommodationId String?
+  user            User?          @relation(fields: [userId], references: [id])
+  userId          String?
+  tour            Tour?          @relation(fields: [tourId], references: [id])
+  tourId          String?
+
+  @@index([accommodationId])
+}
+
+model Accommodation {
+  id                   String                 @id @default(cuid())
+  name                 String
+  description          String
+  location             Location               @relation(fields: [locationId], references: [id])
+  locationId           String
+  price                Float
+  currency             String // e.g., USD, IDR
+  images               Image[]
+  reviews              Review[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  BookingAccommodation BookingAccommodation[]
+
+  @@index([locationId])
 }
 
 enum BookingStatus {
@@ -181,4 +206,18 @@ model Booking {
   price     Float
   status    BookingStatus @default(PENDING)
   createdAt DateTime      @default(now())
+}
+
+model BookingAccommodation {
+  id              String        @id @default(cuid())
+  user            User          @relation(fields: [userId], references: [id])
+  userId          String
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId String
+  checkInDate     DateTime
+  checkOutDate    DateTime
+  numberOfGuests  Int
+  specialRequests String?
+  price           Float
+  status          BookingStatus @default(PENDING)
 }

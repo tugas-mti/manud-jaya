@@ -7,18 +7,13 @@ export async function GET(
 ) {
   const id = (await params).id;
   try {
-    const tour = await prisma.tour.findUnique({
+    const accommodation = await prisma.accommodation.findUnique({
       where: {
         id,
       },
       include: {
         location: true,
-        category: true,
         images: true,
-        activities: true,
-        inclusions: true,
-        exclusions: true,
-        safetyInfo: true,
         reviews: {
           include: {
             user: {
@@ -32,14 +27,17 @@ export async function GET(
       },
     });
 
-    if (!tour) {
-      return NextResponse.json({ error: "Tour not found" }, { status: 404 });
+    if (!accommodation) {
+      return NextResponse.json(
+        { error: "accommodation not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ data: tour });
+    return NextResponse.json({ data: accommodation });
   } catch (error) {
     return NextResponse.json(
-      { error: "Error fetching tour details" },
+      { error: "Error fetching accommodation details" },
       { status: 500 }
     );
   }

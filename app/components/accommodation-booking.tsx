@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import type { Tour } from "@/app/components/tour-card";
+import { type Accommodation } from "@/app/components/accommodation-card";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -10,23 +10,36 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { formatPrice } from "@/lib/utils";
 
-const bookingSchema = z.object({
-  date: z.string().min(1, "Date is required"),
-  timeSlot: z.enum(["MORNING", "AFTERNOON", "EVENING"]),
-  guests: z.number().min(1),
-});
+const bookingSchema = z
+  .object({
+    checkInDate: z.string().min(1, "Check-in date is required"),
+    checkOutDate: z.string().min(1, "Check-out date is required"),
+    guests: z.number().min(1, "Number of guests is required"),
+    specialRequests: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      const checkIn = new Date(data.checkInDate);
+      const checkOut = new Date(data.checkOutDate);
+      return checkOut > checkIn;
+    },
+    {
+      message: "Check-out date must be after check-in date",
+      path: ["checkOutDate"],
+    }
+  );
 
 type BookingFormData = z.infer<typeof bookingSchema>;
 
-type TourBookingProps = {
-  tour: Tour;
+type AccommodationBookingProps = {
+  accommodation: Accommodation;
 };
 
 async function createBooking(
-  data: BookingFormData & { userEmail: string; tourId: string }
+  data: BookingFormData & { userEmail: string; accommodationID: string }
 ) {
   const url = new URL(
-    `/api/tours/${data.tourId}/book`,
+    `/api/accommodations/${data.accommodationID}/book`,
     process.env.NEXT_PUBLIC_API_URL
   );
   const res = await fetch(url, {
@@ -42,7 +55,9 @@ async function createBooking(
   }
   return res.json();
 }
-export default function TourBooking({ tour }: TourBookingProps) {
+export default function AccommodationBooking({
+  accommodation,
+}: AccommodationBookingProps) {
   const session = useSession();
   const userEmail = session.data?.user?.email;
 
@@ -59,7 +74,7 @@ export default function TourBooking({ tour }: TourBookingProps) {
       createBooking({
         ...data,
         userEmail: userEmail || "",
-        tourId: tour.id,
+        accommodationID: accommodation.id,
       }),
       {
         loading: "Booking...",
@@ -74,7 +89,7 @@ export default function TourBooking({ tour }: TourBookingProps) {
   };
 
   const handleShare = () => {
-    const url = `${window.location.origin}/tours/${tour.id}`;
+    const url = `${window.location.origin}/accommodation/${accommodation.id}`;
     navigator.clipboard.writeText(url);
     toast.success("Tour link copied to clipboard");
   };
@@ -95,32 +110,31 @@ export default function TourBooking({ tour }: TourBookingProps) {
                 type="date"
                 placeholder="01/01/2025"
                 className="w-full rounded-md border border-gray-300 p-2 text-sm"
-                {...register("date")}
+                {...register("checkInDate")}
               />
-              {errors.date && (
+              {errors.checkInDate && (
                 <p className="mt-1 text-xs text-red-600">
-                  {errors.date.message}
+                  {errors.checkInDate.message}
                 </p>
               )}
             </div>
           </div>
 
+          {/* Check-out Date Selection */}
           <div className="mb-4">
             <label className="mb-1 block text-sm font-medium text-gray-700">
-              Time Slot
+              Check-out Date
             </label>
             <div className="relative">
-              <select
-                className="w-full rounded-md border border-gray-300 p-2 pr-10 text-sm"
-                {...register("timeSlot")}
-              >
-                <option value="MORNING">Morning</option>
-                <option value="AFTERNOON">Afternoon</option>
-                <option value="EVENING">Evening</option>
-              </select>
-              {errors.timeSlot && (
+              <input
+                type="date"
+                placeholder="01/01/2025"
+                className="w-full rounded-md border border-gray-300 p-2 text-sm"
+                {...register("checkOutDate")}
+              />
+              {errors.checkOutDate && (
                 <p className="mt-1 text-xs text-red-600">
-                  {errors.timeSlot.message}
+                  {errors.checkOutDate.message}
                 </p>
               )}
             </div>
@@ -132,19 +146,12 @@ export default function TourBooking({ tour }: TourBookingProps) {
               No. of Guest
             </label>
             <div className="relative">
-              <select
+              <input
+                type="number"
+                min={1}
                 className="w-full appearance-none rounded-md border border-gray-300 p-2 text-sm"
                 {...register("guests", { valueAsNumber: true })}
-              >
-                {Array.from(
-                  { length: tour.maxGuests - tour.minGuests + 1 },
-                  (_, i) => tour.minGuests + i
-                ).map((num) => (
-                  <option key={num} value={num}>
-                    {num} {num === 1 ? "adult" : "adults"}
-                  </option>
-                ))}
-              </select>
+              />
               {errors.guests && (
                 <p className="mt-1 text-xs text-red-600">
                   {errors.guests.message}
@@ -153,10 +160,27 @@ export default function TourBooking({ tour }: TourBookingProps) {
             </div>
           </div>
 
+          {/* Special Requests */}
+          <div className="mb-4">
+            <label className="mb-1 block text-sm font-medium text-gray-700">
+              Special Requests
+            </label>
+            <textarea
+              className="w-full rounded-md border border-gray-300 p-2 text-sm"
+              rows={3}
+              {...register("specialRequests")}
+            />
+            {errors.specialRequests && (
+              <p className="mt-1 text-xs text-red-600">
+                {errors.specialRequests.message}
+              </p>
+            )}
+          </div>
+
           <div className="mb-4 text-center">
-            <div className="text-2xl font-bold text-green-600">
-              {formatPrice(tour.price, tour.currency)}
-              <span className="text-sm text-gray-500">/person</span>
+            <div className="text-xl font-bold text-green-600">
+              {formatPrice(accommodation.price, accommodation.currency)}
+              <span className="text-sm text-gray-500">/person/night</span>
             </div>
           </div>
 
@@ -173,14 +197,14 @@ export default function TourBooking({ tour }: TourBookingProps) {
               className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               <MessageCircle className="h-4 w-4" />
-              Share This Activity
+              Share This Accommodation
             </button>
           </div>
         </form>
 
         <div className="mt-4 text-xs text-gray-500">
-          You must be logged in to book this tour. If you don't have an account,
-          please{" "}
+          You must be logged in to book this accomodation. If you don't have an
+          account, please{" "}
           <Link href="/register" className="text-green-600 hover:underline">
             register
           </Link>{" "}

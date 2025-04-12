@@ -7,7 +7,7 @@ import Drawer from "@/app/components/drawer";
 import { Receipt } from "@/app/components/receipt";
 import { formatCurrency } from "@/lib/utils";
 
-export type Booking = Prisma.BookingGetPayload<{
+export type AccommodationBooking = Prisma.BookingAccommodationGetPayload<{
   include: {
     user: {
       select: {
@@ -16,12 +16,12 @@ export type Booking = Prisma.BookingGetPayload<{
         email: true;
       };
     };
-    tour: {
+    accommodation: {
       select: {
         id: true;
-        title: true;
+        name: true;
         price: true;
-        duration: true;
+        description: true;
         images: {
           take: 1;
           select: {
@@ -34,7 +34,7 @@ export type Booking = Prisma.BookingGetPayload<{
 }>;
 
 type BookingResponse = {
-  data: Booking[];
+  data: AccommodationBooking[];
   meta: {
     total: number;
     page: number;
@@ -51,13 +51,16 @@ export default async function Bookingpage({
   const limit = 20;
 
   async function fetchBookings(page: number): Promise<BookingResponse> {
-    const url = new URL("/api/bookings", process.env.NEXT_PUBLIC_API_URL);
+    const url = new URL(
+      "/api/booking-accommodations",
+      process.env.NEXT_PUBLIC_API_URL
+    );
     url.searchParams.append("page", String(page));
     url.searchParams.append("limit", String(limit));
 
     const res = await fetch(url);
     if (!res.ok) {
-      throw new Error("Failed to fetch news");
+      throw new Error("Failed to fetch booking accommodations");
     }
 
     return res.json();
@@ -68,7 +71,7 @@ export default async function Bookingpage({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Tour Booking</h1>
+      <h1 className="text-2xl font-bold mb-4">Accommodation Booking</h1>
       <div className="overflow-x-auto">
         <Table
           columns={[
@@ -90,9 +93,9 @@ export default async function Bookingpage({
               },
             },
             {
-              title: "Tour",
-              dataIndex: "tour",
-              key: "tour",
+              title: "Accommodation",
+              dataIndex: "accommodation",
+              key: "accommodation",
               render: (_, record) => {
                 return (
                   <div className="flex items-center">
@@ -100,16 +103,17 @@ export default async function Bookingpage({
                       width={64}
                       height={64}
                       objectFit="cover"
-                      src={record.tour.images[0]?.url}
-                      alt={record.tour.title}
+                      src={record.accommodation.images[0]?.url}
+                      alt={record.accommodation.name}
                       className="rounded-lg mr-4"
                     />
                     <div>
                       <span className="text-lg font-semibold">
-                        {record.tour.title}
+                        {record.accommodation.name}
                       </span>
                       <p className="text-gray-500">
-                        {record.guests} x {formatCurrency(record.tour.price)}
+                        {record.numberOfGuests} x{" "}
+                        {formatCurrency(record.accommodation.price)}
                       </p>
                     </div>
                   </div>
@@ -122,19 +126,22 @@ export default async function Bookingpage({
               render: (value) => formatCurrency(value),
             },
             {
-              title: "Date",
-              dataIndex: "createdAt",
+              title: "Check-in Date",
+              dataIndex: "checkInDate",
               render: (value) => {
                 return new Date(value).toLocaleDateString();
               },
             },
             {
-              title: "Time Slot",
-              dataIndex: "timeSlot",
+              title: "Check-out Date",
+              dataIndex: "checkOutDate",
+              render: (value) => {
+                return new Date(value).toLocaleDateString();
+              },
             },
             {
               title: "# of People",
-              dataIndex: "guests",
+              dataIndex: "numberOfGuests",
             },
             {
               title: "Status",
@@ -154,7 +161,24 @@ export default async function Bookingpage({
               key: "receipt",
               render: (_, record) => (
                 <Drawer>
-                  <Receipt booking={record} />
+                  <Receipt
+                    booking={{
+                      id: record.id,
+                      date: record.checkInDate,
+                      timeSlot: "",
+                      guests: record.numberOfGuests,
+                      price: record.price,
+                      status: record.status,
+                      tour: {
+                        title: record.accommodation.name,
+                        price: record.accommodation.price,
+                        duration:
+                          new Date(record.checkOutDate).getTime() -
+                          new Date(record.checkInDate).getTime(),
+                        images: record.accommodation.images,
+                      },
+                    }}
+                  />
                 </Drawer>
               ),
             },
@@ -166,7 +190,7 @@ export default async function Bookingpage({
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          basePath="/dashboard/bookings"
+          basePath="/dashboard/accommodation-bookings"
         />
       </div>
     </div>

@@ -60,6 +60,11 @@ const Sidebar = ({
             </Link>
           </li>
           <li>
+            <Link href="/accommodation" onClick={toggle}>
+              <p>Stay</p>
+            </Link>
+          </li>
+          <li>
             <Link href="/contacts" onClick={toggle}>
               <p>Contacts</p>
             </Link>

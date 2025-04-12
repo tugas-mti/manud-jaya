@@ -19,6 +19,7 @@ const MENU_ITEMS = [
   { name: "News", path: "/news" },
   { name: "Gallery", path: "/gallery" },
   { name: "Tour", path: "/tour" },
+  { name: "Stay", path: "/accommodation" },
   { name: "Contact", path: "/contacts" },
 ];
 
