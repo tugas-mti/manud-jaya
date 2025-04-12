@@ -33,6 +33,17 @@ export default function Home() {
         <div className="bg-white">
           <Content header={header} text={text} image="/images/image1.jpg" />
         </div>
+        <div className="container mx-auto px-4 py-8 flex flex-wrap gap-4 justify-center">
+          {[1, 2, 3, 4, 6].map((number, index) => (
+            <Image
+              src={`/sgd/sgd-${number}.png`}
+              alt={`sgd-${number}`}
+              width={120}
+              height={120}
+              key={index}
+            />
+          ))}
+        </div>
         <VirtualGallery />
         <NewsFeed />
         <TourFeed />
