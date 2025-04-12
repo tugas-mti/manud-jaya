@@ -28,9 +28,7 @@ export default function UserProfile() {
 
   return (
     <Link href="/api/auth/signin">
-      <button className="bg-gray-800 text-white px-4 py-2 rounded">
-        Login
-      </button>
+      <button className="px-4 py-2 rounded">Login</button>
     </Link>
   );
 }

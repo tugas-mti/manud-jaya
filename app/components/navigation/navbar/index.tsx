@@ -1,15 +1,32 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
 import Logo from "./Logo";
 import UserProfile from "./UserProfile";
+import { Menu } from "lucide-react";
 
-const Navbar = ({
-  isOpen,
-  toggle,
-}: {
+type NavbarProps = {
   isOpen: boolean;
   toggle: () => void;
-}) => {
+};
+
+const MENU_ITEMS = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "News", path: "/news" },
+  { name: "Gallery", path: "/gallery" },
+  { name: "Tour", path: "/tour" },
+  { name: "Stay", path: "/accommodation" },
+  { name: "Contact", path: "/contacts" },
+];
+
+const Navbar = ({ isOpen, toggle }: NavbarProps) => {
+  const pathname = usePathname();
+  const firstPath = `/${pathname.split("/")[1]}`;
+
   return (
     <>
       <div className="w-full h-20 bg-white sticky top-0 z-50">
@@ -18,53 +35,25 @@ const Navbar = ({
             <Logo isOpen={isOpen} toggle={toggle} />
             <button
               type="button"
-              className="inline-flex items-center md:hidden bg-gray-800"
+              className="inline-flex items-center md:hidden"
               onClick={toggle}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="40"
-                height="40"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="#fff"
-                  d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"
-                />
-              </svg>
+              <Menu />
             </button>
             <div className="hidden md:flex gap-x-6 items-center">
-              <ul className="hidden md:flex gap-x-6 text-black ">
-                <li className="rounded-list-item">
-                  <Link href="/" className="link-items">
-                    Home
-                  </Link>
-                </li>
-                <li className="rounded-list-item">
-                  <Link href="/about" className="link-items">
-                    <p>About</p>
-                  </Link>
-                </li>
-                <li className="rounded-list-item">
-                  <Link href="/news" className="link-items">
-                    <p>News</p>
-                  </Link>
-                </li>
-                <li className="rounded-list-item">
-                  <Link href="/gallery" className="link-items">
-                    <p>Gallery</p>
-                  </Link>
-                </li>
-                <li className="rounded-list-item">
-                  <Link href="/tour" className="link-items">
-                    <p>Tour</p>
-                  </Link>
-                </li>
-                <li className="rounded-list-item">
-                  <Link href="/contacts" className="link-items">
-                    <p>Contact</p>
-                  </Link>
-                </li>
+              <ul className="hidden md:flex gap-x-6 text-black">
+                {MENU_ITEMS.map((item, index) => (
+                  <li
+                    key={item.name}
+                    className={clsx("rounded-list-item", {
+                      "bg-black text-white": firstPath === item.path,
+                    })}
+                  >
+                    <Link href={item.path} className="link-items">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
               <UserProfile />
             </div>

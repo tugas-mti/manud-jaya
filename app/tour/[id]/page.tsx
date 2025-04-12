@@ -298,7 +298,7 @@ export default async function TourDetailPage({
                             </div>
                           </div>
                           <div className="text-xs text-gray-500">
-                            <span>{review.user.name}</span>
+                            <span>{review.user?.name}</span>
                             <span> • </span>
                             <span>{review.createdAt.toLocaleString()}</span>
                           </div>

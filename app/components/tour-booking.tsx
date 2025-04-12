@@ -2,13 +2,13 @@
 
 import { useSession } from "next-auth/react";
 import type { Tour } from "@/app/components/tour-card";
-import { formatPrice } from "./tour-card/utils";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { formatPrice } from "@/lib/utils";
 
 const bookingSchema = z.object({
   date: z.string().min(1, "Date is required"),
@@ -71,6 +71,12 @@ export default function TourBooking({ tour }: TourBookingProps) {
         },
       }
     );
+  };
+
+  const handleShare = () => {
+    const url = `${window.location.origin}/tours/${tour.id}`;
+    navigator.clipboard.writeText(url);
+    toast.success("Tour link copied to clipboard");
   };
 
   return (
@@ -162,6 +168,7 @@ export default function TourBooking({ tour }: TourBookingProps) {
               Confirm Booking
             </button>
             <button
+              onClick={handleShare}
               type="button"
               className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >

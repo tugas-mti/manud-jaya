@@ -19,3 +19,20 @@ export function formatDate(date: string | Date): string {
     day: "2-digit",
   }).format(new Date(date));
 }
+
+/**
+ * Format price with currency
+ */
+export function formatPrice(price: number, currency = "IDR"): string {
+  if (currency === "IDR") {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: currency,
+    }).format(price);
+  }
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency,
+  }).format(price);
+}

@@ -68,7 +68,7 @@ export default async function Bookingpage({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Users</h1>
+      <h1 className="text-2xl font-bold mb-4">Tour Booking</h1>
       <div className="overflow-x-auto">
         <Table
           columns={[

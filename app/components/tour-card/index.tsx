@@ -2,9 +2,10 @@
 
 import { Clock, MapPin, Users, Star, Check, X } from "lucide-react";
 import { Prisma } from "@prisma/client";
-import { formatDuration, formatPrice, calculateAverageRating } from "./utils";
+import { formatDuration, calculateAverageRating } from "./utils";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/utils";
 
 export type Tour = Prisma.TourGetPayload<{
   include: {
@@ -20,6 +21,7 @@ export type Tour = Prisma.TourGetPayload<{
         user: {
           select: {
             name: true;
+            email: true;
           };
         };
       };

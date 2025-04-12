@@ -3,6 +3,8 @@ import SearchBar from "./components/searchbar";
 import Content from "./components/content";
 import GoogleMapsReview from "./components/google-maps-review";
 import VirtualGallery from "./components/virtual-gallery";
+import NewsFeed from "./components/news-feed";
+import TourFeed from "./components/tour-feed";
 export default function Home() {
   const text =
     "Manud Jaya Village is a hidden paradise in Kayangan Regency, Semesta Raya. This charming village offers vast green rice fields, lush hills, and crystal-clear rivers flowing amidst shady trees, making it the perfect escape from the hustle and bustle of the city. The cool and fresh air adds even more to the comfort.";
@@ -31,7 +33,20 @@ export default function Home() {
         <div className="bg-white">
           <Content header={header} text={text} image="/images/image1.jpg" />
         </div>
+        <div className="container mx-auto px-4 py-8 flex flex-wrap gap-4 justify-center">
+          {[1, 2, 3, 4, 6].map((number, index) => (
+            <Image
+              src={`/sgd/sgd-${number}.png`}
+              alt={`sgd-${number}`}
+              width={120}
+              height={120}
+              key={index}
+            />
+          ))}
+        </div>
         <VirtualGallery />
+        <NewsFeed />
+        <TourFeed />
         <GoogleMapsReview />
       </div>
     </>

@@ -14,23 +14,6 @@ export function formatDuration(minutes: number): string {
 }
 
 /**
- * Format price with currency
- */
-export function formatPrice(price: number, currency = "IDR"): string {
-  if (currency === "IDR") {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: currency,
-    }).format(price);
-  }
-
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency,
-  }).format(price);
-}
-
-/**
  * Calculate average rating from reviews
  */
 export function calculateAverageRating(reviews: { rating: number }[]): number {

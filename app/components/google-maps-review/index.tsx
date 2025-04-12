@@ -116,7 +116,7 @@ async function GoogleMapsReview() {
         </div>
       </div>
       <iframe
-        style={{ border: 0, width: "100%", height: 400 }}
+        style={{ border: 0, width: "100%", height: 600 }}
         title="Village, Jl. Jatiluwih Kawan No.Desa, Jatiluwih, Kec. Penebel, Kabupaten Tabanan, Bali 82152"
         aria-label="Village, Jl. Jatiluwih Kawan No.Desa, Jatiluwih, Kec. Penebel, Kabupaten Tabanan, Bali 82152"
         allow="autoplay; encrypted-media; gyroscope;"

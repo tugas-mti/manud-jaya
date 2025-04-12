@@ -21,7 +21,12 @@ export async function GET(
         safetyInfo: true,
         reviews: {
           include: {
-            user: true,
+            user: {
+              select: {
+                name: true,
+                email: true,
+              },
+            },
           },
         },
       },
