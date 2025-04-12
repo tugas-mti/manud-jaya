@@ -1,6 +1,8 @@
-import { use } from "react";
+"use client";
+
 import TourCard, { type Tour as TourType } from "../components/tour-card";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 type TourFeed = {
   data: TourType[];
@@ -20,7 +22,23 @@ async function fetchTours(): Promise<TourFeed> {
 }
 
 export default function TourFeed() {
-  const { data: tours, meta } = use(fetchTours());
+  const [loading, setLoading] = useState(true);
+  const [tours, setTours] = useState<TourType[]>([]);
+
+  useEffect(() => {
+    async function getTours() {
+      try {
+        const { data } = await fetchTours();
+        setTours(data);
+      } catch (error) {
+        console.error("Error fetching tours:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getTours();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -34,9 +52,34 @@ export default function TourFeed() {
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {tours.map((tour) => (
-          <TourCard key={tour.id} tour={tour} bookLink={`/tour/${tour.id}`} />
-        ))}
+        {loading ? (
+          <>
+            {[1, 2, 3].map((_, index) => (
+              // pulse loading
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center justify-center"
+              >
+                <div className="animate-pulse bg-gray-200 h-48 w-full rounded-lg mb-4"></div>
+                <div className="w-full">
+                  <div className="animate-pulse bg-gray-200 h-6 w-3/4 rounded mb-2"></div>
+                  <div className="animate-pulse bg-gray-200 h-4 w-full rounded mb-2"></div>
+                  <div className="animate-pulse bg-gray-200 h-4 w-full rounded mb-2"></div>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            {tours.map((tour) => (
+              <TourCard
+                key={tour.id}
+                tour={tour}
+                bookLink={`/tour/${tour.id}`}
+              />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

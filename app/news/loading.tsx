@@ -7,7 +7,7 @@ export default function Loading() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {[...Array(6)].map((_, index) => (
+        {[...Array(3)].map((_, index) => (
           <div key={index}>
             <div className="h-[240px] bg-gray-200 animate-pulse rounded shadow-lg mb-4" />
             <div className="h-6 bg-gray-200 animate-pulse rounded w-3/4 mb-2" />

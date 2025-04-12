@@ -1,7 +1,9 @@
+"use client";
+
 import { News } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { use } from "react";
+import { useState, useEffect } from "react";
 
 type NewsResponse = {
   data: News[];
@@ -21,7 +23,23 @@ async function fetchNews(): Promise<NewsResponse> {
 }
 
 export default function NewsFeed() {
-  const { data: news, meta } = use(fetchNews());
+  const [loading, setLoading] = useState(true);
+  const [news, setNews] = useState<News[]>([]);
+
+  useEffect(() => {
+    async function getNews() {
+      try {
+        const { data } = await fetchNews();
+        setNews(data);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getNews();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -35,39 +53,53 @@ export default function NewsFeed() {
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {news.map((item) => (
-          <div
-            key={item.id}
-            className="hover:opacity-80 transition-opacity duration-300"
-          >
-            <Image
-              src={item.image}
-              alt={item.title}
-              width={400}
-              height={200}
-              className="rounded shadow-lg mb-4 w-full h-[240px] object-cover"
-            />
-            <h3 className="text-lg font-bold">{item.title}</h3>
-            <div className="flex space-x-4 mb-4">
-              <span className="text-gray-600">
-                {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
-              </span>
-              <span className="text-gray-600 mb-4">
-                {new Date(item.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
-            </div>
-            <Link
-              href={`/news/${item.id}`}
-              className="border border-gray-300 rounded px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Read more
-            </Link>
-          </div>
-        ))}
+        {loading ? (
+          <>
+            {[...Array(3)].map((_, index) => (
+              <div key={index}>
+                <div className="h-[240px] bg-gray-200 animate-pulse rounded shadow-lg mb-4" />
+                <div className="h-6 bg-gray-200 animate-pulse rounded w-3/4 mb-2" />
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-1/2" />
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            {news.map((item) => (
+              <div
+                key={item.id}
+                className="hover:opacity-80 transition-opacity duration-300"
+              >
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  width={400}
+                  height={200}
+                  className="rounded shadow-lg mb-4 w-full h-[240px] object-cover"
+                />
+                <h3 className="text-lg font-bold">{item.title}</h3>
+                <div className="flex space-x-4 mb-4">
+                  <span className="text-gray-600">
+                    {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+                  </span>
+                  <span className="text-gray-600 mb-4">
+                    {new Date(item.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
+                </div>
+                <Link
+                  href={`/news/${item.id}`}
+                  className="border border-gray-300 rounded px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Read more
+                </Link>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
