@@ -33,10 +33,6 @@ export default function Home() {
         </div>
         <div className="bg-white">
           <Content header={header} text={text} image="/images/image1.jpg" />
-          <div className="px-6 py-12">
-            <h1 className="text-3xl font-bold mb-6">Manud Jaya Experiences</h1>
-            <Experience/>
-          </div>
         </div>
         <div className="container mx-auto px-4 py-8 flex flex-wrap gap-4 justify-center">
           {[1, 2, 3, 4, 6].map((number, index) => (
@@ -48,6 +44,10 @@ export default function Home() {
               key={index}
             />
           ))}
+        </div>
+        <div className="px-6 py-12">
+            <h1 className="text-3xl font-bold mb-6">Manud Jaya Experiences</h1>
+            <Experience/>
         </div>
         <VirtualGallery />
         <NewsFeed />
