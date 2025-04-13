@@ -12,7 +12,7 @@ type NewsResponse = {
 async function fetchNews(): Promise<NewsResponse> {
   const url = new URL("/api/news", process.env.NEXT_PUBLIC_API_URL);
   url.searchParams.append("page", "1");
-  url.searchParams.append("limit", "3");
+  url.searchParams.append("limit", "4");
 
   const res = await fetch(url);
   if (!res.ok) {
@@ -52,10 +52,10 @@ export default function NewsFeed() {
           See all news
         </Link>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading ? (
           <>
-            {[...Array(3)].map((_, index) => (
+            {[...Array(4)].map((_, index) => (
               <div key={index}>
                 <div className="h-[240px] bg-gray-200 animate-pulse rounded shadow-lg mb-4" />
                 <div className="h-6 bg-gray-200 animate-pulse rounded w-3/4 mb-2" />

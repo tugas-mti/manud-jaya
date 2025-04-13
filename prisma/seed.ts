@@ -1,5 +1,5 @@
-import { PrismaClient, TimeSlot, BookingStatus } from '@prisma/client'
-const prisma = new PrismaClient()
+import { PrismaClient, TimeSlot, BookingStatus } from "@prisma/client";
+const prisma = new PrismaClient();
 
 async function main() {
   // Create sample locations
@@ -7,8 +7,8 @@ async function main() {
     data: {
       name: "Mount Raung",
       latitude: -8.125293,
-      longitude: 114.042130,
-    }
+      longitude: 114.04213,
+    },
   });
 
   const location2 = await prisma.location.create({
@@ -16,14 +16,14 @@ async function main() {
       name: "Ijen Crater",
       latitude: -8.058333,
       longitude: 114.241667,
-    }
+    },
   });
 
   // Create sample categories
   const hiking = await prisma.tourCategory.create({
     data: {
       name: "Hiking",
-    }
+    },
   });
 
   // Create sample tours
@@ -45,42 +45,42 @@ async function main() {
         create: [
           {
             url: "https://example.com/raung1.jpg",
-            altText: "Mount Raung Summit View"
-          }
-        ]
+            altText: "Mount Raung Summit View",
+          },
+        ],
       },
       activities: {
         create: [
           {
             title: "Summit Attack",
-            description: "Night climb to reach the summit before sunrise"
+            description: "Night climb to reach the summit before sunrise",
           },
           {
             title: "Camping",
-            description: "Camp at base camp"
-          }
-        ]
+            description: "Camp at base camp",
+          },
+        ],
       },
       inclusions: {
         create: [
           { description: "Professional guide" },
           { description: "Camping equipment" },
-          { description: "Meals during trek" }
-        ]
+          { description: "Meals during trek" },
+        ],
       },
       exclusions: {
         create: [
           { description: "Personal hiking gear" },
-          { description: "Travel insurance" }
-        ]
+          { description: "Travel insurance" },
+        ],
       },
       safetyInfo: {
         create: [
           { description: "Bring warm clothing" },
-          { description: "Must be physically fit" }
-        ]
-      }
-    }
+          { description: "Must be physically fit" },
+        ],
+      },
+    },
   });
 
   // Create sample user
@@ -90,7 +90,7 @@ async function main() {
       email: "john@example.com",
       password: "hashedpassword",
       phoneNumber: "+6281234567890",
-    }
+    },
   });
 
   // Create sample booking
@@ -98,12 +98,12 @@ async function main() {
     data: {
       userId: user.id,
       tourId: tour1.id,
-      date: new Date('2024-01-15'),
+      date: new Date("2024-01-15"),
       timeSlot: TimeSlot.MORNING,
       guests: 2,
       price: 3000000,
-      status: BookingStatus.CONFIRMED
-    }
+      status: BookingStatus.CONFIRMED,
+    },
   });
 
   // Create sample review
@@ -112,8 +112,8 @@ async function main() {
       userId: user.id,
       tourId: tour1.id,
       rating: 5,
-      comment: "Amazing experience! The guides were very professional."
-    }
+      comment: "Amazing experience! The guides were very professional.",
+    },
   });
 }
 

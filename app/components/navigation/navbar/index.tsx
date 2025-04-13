@@ -16,10 +16,10 @@ type NavbarProps = {
 const MENU_ITEMS = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
-  { name: "News", path: "/news" },
+  { name: "News/Events", path: "/news" },
   { name: "Gallery", path: "/gallery" },
   { name: "Tour", path: "/tour" },
-  { name: "Stay", path: "/accommodation" },
+  // { name: "Stay", path: "/accommodation" },
   { name: "Contact", path: "/contacts" },
 ];
 

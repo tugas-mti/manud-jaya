@@ -39,6 +39,8 @@ export async function POST(request: Request) {
       <a href="${process.env.NEXTAUTH_URL}/reset-password?token=${token}">Reset Password</a>
     `;
 
+    console.log("Sending email to:", email);
+
     sendMail({
       to: email,
       subject: "Password Reset Request",

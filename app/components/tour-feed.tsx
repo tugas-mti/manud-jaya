@@ -11,7 +11,7 @@ type TourFeed = {
 async function fetchTours(): Promise<TourFeed> {
   const url = new URL("/api/tours", process.env.NEXT_PUBLIC_API_URL);
   url.searchParams.append("page", "1");
-  url.searchParams.append("limit", "3");
+  url.searchParams.append("limit", "4");
 
   const res = await fetch(url);
   if (!res.ok) {
@@ -51,10 +51,10 @@ export default function TourFeed() {
           See all tours
         </Link>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading ? (
           <>
-            {[1, 2, 3].map((_, index) => (
+            {[1, 2, 3, 4].map((_, index) => (
               // pulse loading
               <div
                 key={index}

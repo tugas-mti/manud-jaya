@@ -23,8 +23,8 @@ export default async function TourPage() {
         </div>
       </div>
       <div className="container mx-auto px-4 mb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {[1, 2, 3].map((_, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((_, index) => (
             // pulse loading
             <div
               key={index}

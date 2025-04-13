@@ -46,12 +46,12 @@ export default function Home() {
           ))}
         </div>
         <div className="px-6 py-12">
-            <h1 className="text-3xl font-bold mb-6">Manud Jaya Experiences</h1>
-            <Experience/>
+          <h1 className="text-3xl font-bold mb-6">Manud Jaya Experiences</h1>
+          <Experience />
         </div>
         <VirtualGallery />
-        <NewsFeed />
         <TourFeed />
+        <NewsFeed />
         <GoogleMapsReview />
       </div>
     </>
