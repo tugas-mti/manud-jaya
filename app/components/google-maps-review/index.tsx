@@ -1,5 +1,7 @@
 import Image from "next/image";
 import ShowMoreText from "../show-more-text";
+import GoogleRatingCard from "../google-rating-card";
+import { Star } from "lucide-react";
 
 interface GooglePlaceReview {
   author_name: string;
@@ -89,13 +91,28 @@ async function GoogleMapsReview() {
 
   return (
     <div className="bg-gray-100">
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-4 space-y-8">
         <h2 className="text-3xl font-bold mb-8">Review your experiences</h2>
+        <GoogleRatingCard />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {MOCK_REVIEWS?.map((review, index) => (
-            <div key={index} className="bg-white p-4 rounded-lg shadow">
-              <div className="flex items-center mb-4">
+            <div
+              key={index}
+              className="bg-white p-4 rounded-lg shadow space-y-4"
+            >
+              <ShowMoreText text={review.text} />
+
+              <div className="flex">
+                {[...Array(review.rating)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="fill-yellow-400 text-yellow-400 w-6 h-6"
+                    strokeWidth={0}
+                  />
+                ))}
+              </div>
+              <div className="flex items-center">
                 <Image
                   src={generateProfilePhotoUrl(review.author_name)}
                   alt={review.author_name}
@@ -110,7 +127,6 @@ async function GoogleMapsReview() {
                   </p>
                 </div>
               </div>
-              <ShowMoreText text={review.text} />
             </div>
           ))}
         </div>
