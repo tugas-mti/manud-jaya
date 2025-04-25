@@ -1,9 +1,10 @@
 import Pagination from "@/app/components/pagination";
+import RichTextEditor from "@/app/components/rich-text-editor";
 import Table from "@/app/components/table";
-import { News as NewsType } from "@prisma/client";
+import { Tour as TourType } from "@prisma/client";
 
-type NewsResponse = {
-  data: NewsType[];
+type TourResponse = {
+  data: TourType[];
   meta: {
     total: number;
     page: number;
@@ -11,7 +12,7 @@ type NewsResponse = {
   };
 };
 
-export default async function NewsPage({
+export default async function ToursPage({
   searchParams,
 }: {
   searchParams: Promise<{ page: string }>;
@@ -19,25 +20,25 @@ export default async function NewsPage({
   const currentPage = Number((await searchParams).page) || 1;
   const limit = 20;
 
-  async function fetchGalleries(page: number): Promise<NewsResponse> {
-    const url = new URL("/api/news", process.env.NEXT_PUBLIC_API_URL);
+  async function fetchTours(page: number): Promise<TourResponse> {
+    const url = new URL("/api/tours", process.env.NEXT_PUBLIC_API_URL);
     url.searchParams.append("page", String(page));
     url.searchParams.append("limit", String(limit));
 
     const res = await fetch(url);
     if (!res.ok) {
-      throw new Error("Failed to fetch news");
+      throw new Error("Failed to fetch tours");
     }
 
     return res.json();
   }
 
-  const { data: news, meta } = await fetchGalleries(currentPage);
+  const { data: tours, meta } = await fetchTours(currentPage);
   const totalPages = Math.ceil(meta.total / limit);
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">News</h1>
+      <h1 className="text-2xl font-bold mb-4">Tours</h1>
       <div className="overflow-x-auto">
         <Table
           columns={[
@@ -50,8 +51,9 @@ export default async function NewsPage({
               dataIndex: "title",
             },
             {
-              title: "Type",
-              dataIndex: "type",
+              title: "Price",
+              dataIndex: "price",
+              render: (value, record) => `${record.currency} ${value}`,
             },
             {
               title: "Status",
@@ -61,13 +63,13 @@ export default async function NewsPage({
               ),
             },
             {
-              title: "Action",
+              title: "Actions",
               dataIndex: "id",
               key: "action",
-              render: (value, record) => (
+              render: (value) => (
                 <div className="space-x-2">
                   <a
-                    href={`/dashboard/news/${value}`}
+                    href={`/dashboard/tours/${value}`}
                     className="text-blue-500 hover:underline"
                   >
                     Detail
@@ -76,14 +78,14 @@ export default async function NewsPage({
               ),
             },
           ]}
-          dataSource={news}
+          dataSource={tours}
         />
       </div>
       <div className="mt-8 flex justify-center">
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          basePath="/dashboard/news"
+          basePath="/dashboard/tours"
         />
       </div>
     </div>

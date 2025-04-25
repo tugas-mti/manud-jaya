@@ -26,8 +26,8 @@ const menuItems: MenuItem[] = [
     text: "Tour Bookings",
   },
   {
-    href: "/dashboard/accommodation-bookings",
-    text: "Accommodation Bookings",
+    href: "/dashboard/tours",
+    text: "Tour",
   },
 ];
 
@@ -36,11 +36,11 @@ export default async function Layout({ children }: PropsWithChildren) {
 
   if (!session?.user?.email) redirect("/login");
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-  });
+  // const user = await prisma.user.findUnique({
+  //   where: { email: session.user.email },
+  // });
 
-  if (user?.isAdmin === false) redirect("/");
+  // if (user?.isAdmin === false) redirect("/");
 
   return <DashboardLayout menuItems={menuItems}>{children}</DashboardLayout>;
 }

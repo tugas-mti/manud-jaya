@@ -1,7 +1,40 @@
+"use client";
+
 import Image from "next/image";
 import Gallery from "../gallery";
+import { useState, useEffect } from "react";
+import { Gallery as GalleryType } from "@prisma/client";
+
+const fetchGalleries = async () => {
+  const url = new URL("/api/galleries", process.env.NEXT_PUBLIC_API_URL);
+  url.searchParams.append("page", "1");
+  url.searchParams.append("limit", "5");
+  url.searchParams.append("published", "true");
+
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Failed to fetch galleries");
+  }
+
+  return res.json();
+};
 
 export default function VirtualGallery() {
+  const [galleries, setGalleries] = useState<GalleryType[]>([]);
+
+  useEffect(() => {
+    async function getGalleries() {
+      try {
+        const { data } = await fetchGalleries();
+        setGalleries(data);
+      } catch (error) {
+        console.error("Error fetching galleries:", error);
+      }
+    }
+
+    getGalleries();
+  }, []);
+
   return (
     <div>
       <div className="relative shadow-lg">
@@ -60,7 +93,15 @@ export default function VirtualGallery() {
         <p className="text-center text-gray-600 mb-8">
           Explore our amazing collection of images of Manud Jaya
         </p>
-        <Gallery />
+        <Gallery
+          photos={galleries.map((gallery) => ({
+            src: gallery.image,
+            key: gallery.id,
+            width: 1080,
+            height: 720,
+            alt: gallery.title,
+          }))}
+        />
       </div>
     </div>
   );
