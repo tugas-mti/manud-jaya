@@ -44,3 +44,31 @@ export async function GET(
     );
   }
 }
+
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const id = (await params).id;
+  try {
+    const body = await request.json();
+
+    // Update tour with new data
+    const tour = await prisma.tour.update({
+      where: { id },
+      data: {
+        title: body.title,
+        description: body.description,
+        price: body.price,
+        published: body.published || false,
+        images: {
+          create: [{ url: body.image, altText: "Jatiluwih Image" }],
+        },
+      },
+    });
+
+    return NextResponse.json({ data: tour });
+  } catch (error) {
+    return NextResponse.json({ error: "Error updating tour" }, { status: 500 });
+  }
+}

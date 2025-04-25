@@ -145,7 +145,10 @@ export default async function TourDetailPage({
             {/* Description */}
             <div className="mb-8">
               <h2 className="mb-4 text-xl font-bold">Description</h2>
-              <p className="mb-4 text-sm text-gray-700">{tour.description}</p>
+              <p
+                className="mb-4 text-sm text-gray-700"
+                dangerouslySetInnerHTML={{ __html: tour.description }}
+              />
             </div>
 
             {/* Activity */}

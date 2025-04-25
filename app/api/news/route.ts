@@ -7,20 +7,27 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
+    const published = searchParams.get("published");
+
     const skip = (page - 1) * limit;
 
-    const news = await prisma.news.findMany({
-      include: {
-        Comment: {
-          include: {
-            User: true,
-          },
+    const [news, total] = await Promise.all([
+      prisma.news.findMany({
+        take: limit,
+        skip: skip,
+        where: {
+          published: published ? published === "true" : undefined,
         },
-      },
-      take: limit,
-      skip: skip,
-    });
-    const total = await prisma.news.count();
+        include: {
+          createdBy: true,
+        },
+      }),
+      prisma.news.count({
+        where: {
+          published: published ? published === "true" : undefined,
+        },
+      }),
+    ]);
 
     return NextResponse.json({
       data: news,
@@ -41,11 +48,7 @@ export async function POST(request: Request) {
         content: body.content,
         image: body.image,
         type: body.type || "news",
-        createdBy: {
-          connect: {
-            id: body.userId,
-          },
-        },
+        published: body.published || false,
       },
     });
     return NextResponse.json(news, { status: 201 });

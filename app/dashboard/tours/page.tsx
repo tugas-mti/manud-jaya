@@ -1,7 +1,9 @@
 import Pagination from "@/app/components/pagination";
-import RichTextEditor from "@/app/components/rich-text-editor";
+import RichTextEditor from "@/app/components/rich-text-editor/editor";
 import Table from "@/app/components/table";
+import { cn } from "@/lib/utils";
 import { Tour as TourType } from "@prisma/client";
+import TourModal from "./modal";
 
 type TourResponse = {
   data: TourType[];
@@ -38,7 +40,10 @@ export default async function ToursPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Tours</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold mb-4">Tours</h1>
+        <TourModal type="create" />
+      </div>
       <div className="overflow-x-auto">
         <Table
           columns={[
@@ -59,21 +64,27 @@ export default async function ToursPage({
               title: "Status",
               dataIndex: "published",
               render: (value) => (
-                <span>{value ? "Published" : "Unpublished"}</span>
+                <div className="flex justify-center">
+                  <span
+                    className={cn(
+                      "rounded-full px-2 py-1 text-xs font-semibold",
+                      value
+                        ? "bg-green-100 text-green-800"
+                        : "bg-gray-200 text-gray-800"
+                    )}
+                  >
+                    {value ? "Published" : "Unpublished"}
+                  </span>
+                </div>
               ),
             },
             {
               title: "Actions",
               dataIndex: "id",
               key: "action",
-              render: (value) => (
-                <div className="space-x-2">
-                  <a
-                    href={`/dashboard/tours/${value}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Detail
-                  </a>
+              render: (value, record) => (
+                <div className="flex gap-2">
+                  <TourModal type="edit" tour={record} />
                 </div>
               ),
             },

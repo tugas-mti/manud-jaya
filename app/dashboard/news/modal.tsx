@@ -2,58 +2,57 @@
 
 import { Dialog } from "@/app/components/dialog";
 import { useState } from "react";
-import { Gallery } from "@prisma/client";
-
-// zod schema
+import { News } from "@prisma/client";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Upload from "@/app/components/upload";
+import RichTextEditor from "@/app/components/rich-text-editor/editor";
 
-const CreateGallerySchema = z.object({
+const CreateNewsSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
+  content: z.string().min(1, "Content is required"),
   image: z.string().optional(),
-  published: z.enum(["true", "false"]).transform((val) => val === "true"),
+  type: z.enum(["news", "event", "festival"]).optional(),
+  published: z.boolean().optional(),
 });
 
-type GalleryModalProps = {
+type NewsModalProps = {
   type: "create" | "edit";
-  gallery?: Gallery;
+  news?: News;
 };
 
-export default function GalleryModal({ type, gallery }: GalleryModalProps) {
+export default function NewsModal({ type, news }: NewsModalProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(CreateGallerySchema),
+    resolver: zodResolver(CreateNewsSchema),
     defaultValues: {
-      title: gallery?.title || "",
-      description: gallery?.description || "",
-      image: gallery?.image || "",
-      published: gallery?.published || false,
+      title: news?.title || "",
+      content: news?.content || "",
+      image: news?.image || "",
+      type: (news?.type as "news" | "event" | "festival") || "news",
+      published: news?.published || false,
     },
   });
 
   const handleFormSubmit = async (data: {
     title?: string;
-    description?: string;
+    content?: string;
     image?: string;
     published?: boolean;
   }) => {
     const url =
-      type === "edit" && gallery?.id
-        ? `/api/galleries/${gallery.id}`
-        : "/api/galleries";
+      type === "edit" && news?.id ? `/api/news/${news.id}` : "/api/news";
 
+    console.log("url", url);
     const res = await fetch(url, {
       method: type === "edit" ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,7 +60,7 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
     });
 
     if (!res.ok) {
-      throw new Error(`Failed to ${type} gallery`);
+      throw new Error(`Failed to ${type} news`);
     }
 
     setIsOpen(false);
@@ -69,22 +68,21 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
   };
 
   const handleDelete = async () => {
-    if (!gallery?.id) return;
+    if (!news?.id) return;
 
     try {
-      const res = await fetch(`/api/galleries/${gallery.id}`, {
+      const res = await fetch(`/api/news/${news.id}`, {
         method: "DELETE",
       });
 
       if (!res.ok) {
-        throw new Error("Failed to delete gallery");
+        throw new Error("Failed to delete news");
       }
 
       setIsOpen(false);
       router.refresh();
     } catch (error) {
-      console.error("Error deleting gallery:", error);
-    } finally {
+      console.error("Error deleting news:", error);
     }
   };
 
@@ -100,7 +98,7 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
       <Dialog
         open={isOpen}
         onCancel={() => setIsOpen(false)}
-        title={type === "edit" ? "Edit Gallery" : "Create Gallery"}
+        title={type === "edit" ? "Edit News" : "Create News"}
       >
         <form onSubmit={handleSubmit(handleFormSubmit)}>
           <div className="mb-4">
@@ -132,23 +130,23 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
           </div>
           <div className="mb-4">
             <label
-              htmlFor="description"
+              htmlFor="content"
               className="block text-sm font-medium text-gray-700"
             >
-              Description
+              Content
             </label>
             <Controller
               control={control}
-              name="description"
-              render={({ field }) => (
-                <textarea
-                  id="description"
-                  {...field}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  rows={4}
-                />
+              name="content"
+              render={({ field: { value, onChange } }) => (
+                <RichTextEditor value={value} onChange={onChange} />
               )}
             />
+            {errors.content && (
+              <p className="mt-2 text-sm text-red-600">
+                {errors.content.message}
+              </p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -172,6 +170,35 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
           </div>
           <div className="mb-4">
             <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Type
+            </label>
+            <Controller
+              control={control}
+              name="type"
+              render={({ field: { onChange, value } }) => (
+                <select
+                  id="type"
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="news">News</option>
+                  <option value="event">Event</option>
+                  <option value="festival" selected>
+                    Festival
+                  </option>
+                </select>
+              )}
+            />
+            {errors.type && (
+              <p className="mt-2 text-sm text-red-600">{errors.type.message}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label
               htmlFor="published"
               className="block text-sm font-medium text-gray-700"
             >
@@ -183,8 +210,8 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
               render={({ field: { onChange, value } }) => (
                 <select
                   id="published"
-                  value={String(value)}
-                  onChange={(e) => onChange(e.target.value)}
+                  value={value ? "true" : "false"}
+                  onChange={(e) => onChange(e.target.value === "true")}
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="true">True</option>
@@ -192,6 +219,11 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
                 </select>
               )}
             />
+            {errors.published && (
+              <p className="mt-2 text-sm text-red-600">
+                {errors.published.message}
+              </p>
+            )}
           </div>
           <div className="flex justify-end">
             {type === "edit" && (

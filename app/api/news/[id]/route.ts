@@ -7,9 +7,14 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const id = (await params).id;
+  const { searchParams } = new URL(request.url);
+  const published = searchParams.get("published");
+
   try {
     const news = await prisma.news.findUnique({
-      where: { id },
+      where: {
+        id,
+      },
       include: {
         Comment: {
           include: {
@@ -41,6 +46,7 @@ export async function PUT(
   const id = (await params).id;
   try {
     const body = await request.json();
+    console.log("body", body);
     const news = await prisma.news.update({
       where: { id },
       data: {
@@ -48,6 +54,7 @@ export async function PUT(
         content: body.content,
         image: body.image,
         type: body.type,
+        published: body.published,
       },
     });
     return NextResponse.json(news);

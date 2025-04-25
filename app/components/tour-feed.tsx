@@ -12,6 +12,7 @@ async function fetchTours(): Promise<TourFeed> {
   const url = new URL("/api/tours", process.env.NEXT_PUBLIC_API_URL);
   url.searchParams.append("page", "1");
   url.searchParams.append("limit", "4");
+  url.searchParams.append("published", "true");
 
   const res = await fetch(url);
   if (!res.ok) {

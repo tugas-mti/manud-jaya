@@ -71,7 +71,10 @@ export default function TourCard({ tour, bookLink }: TourCardProps) {
         </div>
 
         {/* Description */}
-        <p className="mb-4 text-sm text-gray-600">{tour.description}</p>
+        <p
+          className="mb-4 text-sm text-gray-600 line-clamp-2"
+          dangerouslySetInnerHTML={{ __html: tour.description }}
+        />
 
         {/* Location */}
         <div className="mb-4 flex items-center gap-1 text-sm text-gray-600">

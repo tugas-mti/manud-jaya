@@ -1,6 +1,8 @@
 import Pagination from "@/app/components/pagination";
 import Table from "@/app/components/table";
 import { News as NewsType } from "@prisma/client";
+import NewsModal from "./modal";
+import { cn } from "@/lib/utils";
 
 type NewsResponse = {
   data: NewsType[];
@@ -37,7 +39,10 @@ export default async function NewsPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">News</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold mb-4">News</h1>
+        <NewsModal type="create" />
+      </div>
       <div className="overflow-x-auto">
         <Table
           columns={[
@@ -57,21 +62,27 @@ export default async function NewsPage({
               title: "Status",
               dataIndex: "published",
               render: (value) => (
-                <span>{value ? "Published" : "Unpublished"}</span>
+                <div className="flex justify-center">
+                  <span
+                    className={cn(
+                      "rounded-full px-2 py-1 text-xs font-semibold",
+                      value
+                        ? "bg-green-100 text-green-800"
+                        : "bg-gray-200 text-gray-800"
+                    )}
+                  >
+                    {value ? "Published" : "Unpublished"}
+                  </span>
+                </div>
               ),
             },
             {
-              title: "Action",
+              title: "Actions",
               dataIndex: "id",
-              key: "action",
+              key: "actions",
               render: (value, record) => (
-                <div className="space-x-2">
-                  <a
-                    href={`/dashboard/news/${value}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Detail
-                  </a>
+                <div className="flex gap-2">
+                  <NewsModal type="edit" news={record} />
                 </div>
               ),
             },

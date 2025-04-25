@@ -13,6 +13,7 @@ async function fetchNews(): Promise<NewsResponse> {
   const url = new URL("/api/news", process.env.NEXT_PUBLIC_API_URL);
   url.searchParams.append("page", "1");
   url.searchParams.append("limit", "4");
+  url.searchParams.append("published", "true");
 
   const res = await fetch(url);
   if (!res.ok) {

@@ -25,8 +25,10 @@ export const Dialog = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <div>{children}</div>
         </DialogHeader>
+        <div className="min-h-0 max-h-[90vh] overflow-y-auto p-2">
+          {children}
+        </div>
       </DialogContent>
     </DialogPrimitive>
   );

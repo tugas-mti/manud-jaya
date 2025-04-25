@@ -2,57 +2,57 @@
 
 import { Dialog } from "@/app/components/dialog";
 import { useState } from "react";
-import { Gallery } from "@prisma/client";
-
-// zod schema
+import { Tour } from "@prisma/client";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Upload from "@/app/components/upload";
+import RichTextEditor from "@/app/components/rich-text-editor/editor";
 
-const CreateGallerySchema = z.object({
+const CreateTourSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
+  description: z.string().min(1, "Description is required"),
+  price: z.number().min(0, "Price must be positive"),
   image: z.string().optional(),
-  published: z.enum(["true", "false"]).transform((val) => val === "true"),
+  published: z.boolean().optional(),
 });
 
-type GalleryModalProps = {
+type TourModalProps = {
   type: "create" | "edit";
-  gallery?: Gallery;
+  tour?: Tour;
 };
 
-export default function GalleryModal({ type, gallery }: GalleryModalProps) {
+export default function TourModal({ type, tour }: TourModalProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(CreateGallerySchema),
+    resolver: zodResolver(CreateTourSchema),
     defaultValues: {
-      title: gallery?.title || "",
-      description: gallery?.description || "",
-      image: gallery?.image || "",
-      published: gallery?.published || false,
+      title: tour?.title || "",
+      description: tour?.description || "",
+      price: tour?.price || 0,
+      /** @ts-ignore */
+      image: tour?.images?.[0]?.url || "",
+      published: tour?.published || false,
     },
   });
 
   const handleFormSubmit = async (data: {
     title?: string;
     description?: string;
+    price?: number;
     image?: string;
     published?: boolean;
   }) => {
     const url =
-      type === "edit" && gallery?.id
-        ? `/api/galleries/${gallery.id}`
-        : "/api/galleries";
+      type === "edit" && tour?.id ? `/api/tours/${tour.id}` : "/api/tours";
 
     const res = await fetch(url, {
       method: type === "edit" ? "PUT" : "POST",
@@ -61,7 +61,7 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
     });
 
     if (!res.ok) {
-      throw new Error(`Failed to ${type} gallery`);
+      throw new Error(`Failed to ${type} tour`);
     }
 
     setIsOpen(false);
@@ -69,22 +69,21 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
   };
 
   const handleDelete = async () => {
-    if (!gallery?.id) return;
+    if (!tour?.id) return;
 
     try {
-      const res = await fetch(`/api/galleries/${gallery.id}`, {
+      const res = await fetch(`/api/tours/${tour.id}`, {
         method: "DELETE",
       });
 
       if (!res.ok) {
-        throw new Error("Failed to delete gallery");
+        throw new Error("Failed to delete tour");
       }
 
       setIsOpen(false);
       router.refresh();
     } catch (error) {
-      console.error("Error deleting gallery:", error);
-    } finally {
+      console.error("Error deleting tour:", error);
     }
   };
 
@@ -100,7 +99,7 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
       <Dialog
         open={isOpen}
         onCancel={() => setIsOpen(false)}
-        title={type === "edit" ? "Edit Gallery" : "Create Gallery"}
+        title={type === "edit" ? "Edit Tour" : "Create Tour"}
       >
         <form onSubmit={handleSubmit(handleFormSubmit)}>
           <div className="mb-4">
@@ -140,15 +139,47 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
             <Controller
               control={control}
               name="description"
-              render={({ field }) => (
-                <textarea
-                  id="description"
-                  {...field}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  rows={4}
+              render={({ field: { value, onChange } }) => (
+                <RichTextEditor value={value} onChange={onChange} />
+              )}
+            />
+            {errors.description && (
+              <p className="mt-2 text-sm text-red-600">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Price
+            </label>
+            <Controller
+              control={control}
+              name="price"
+              render={({ field: { value, onChange } }) => (
+                <input
+                  type="number"
+                  id="price"
+                  value={value}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value);
+                    onChange(isNaN(val) ? 0 : val);
+                  }}
+                  min="0"
+                  className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ${
+                    errors.price ? "border-red-500" : ""
+                  }`}
                 />
               )}
             />
+            {errors.price && (
+              <p className="mt-2 text-sm text-red-600">
+                {errors.price.message}
+              </p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -183,8 +214,8 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
               render={({ field: { onChange, value } }) => (
                 <select
                   id="published"
-                  value={String(value)}
-                  onChange={(e) => onChange(e.target.value)}
+                  value={value ? "true" : "false"}
+                  onChange={(e) => onChange(e.target.value === "true")}
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="true">True</option>
@@ -192,6 +223,11 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
                 </select>
               )}
             />
+            {errors.published && (
+              <p className="mt-2 text-sm text-red-600">
+                {errors.published.message}
+              </p>
+            )}
           </div>
           <div className="flex justify-end">
             {type === "edit" && (
@@ -214,7 +250,7 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
-              Post
+              {type === "edit" ? "Save" : "Create"}
             </button>
           </div>
         </form>

@@ -4,6 +4,7 @@ import { Gallery as GalleryType } from "@prisma/client";
 import Image from "next/image";
 import GalleryModal from "./modal";
 import YoutubeModal from "./youtube-modal";
+import { cn } from "@/lib/utils";
 
 type GalleryResponse = {
   data: GalleryType[];
@@ -87,7 +88,18 @@ export default async function GalleryPage({
               title: "Status",
               dataIndex: "published",
               render: (value) => (
-                <span>{value ? "Published" : "Unpublished"}</span>
+                <div className="flex justify-center">
+                  <span
+                    className={cn(
+                      "rounded-full px-2 py-1 text-xs font-semibold",
+                      value
+                        ? "bg-green-100 text-green-800"
+                        : "bg-gray-200 text-gray-800"
+                    )}
+                  >
+                    {value ? "Published" : "Unpublished"}
+                  </span>
+                </div>
               ),
             },
             {

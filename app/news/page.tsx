@@ -20,7 +20,7 @@ export default async function NewsPage({
   searchParams: Promise<{ page: string }>;
 }) {
   const currentPage = Number((await searchParams).page) || 1;
-  const limit = 10;
+  const limit = 9;
 
   async function fetchNews(page: number): Promise<NewsResponse> {
     const url = new URL("/api/news", process.env.NEXT_PUBLIC_API_URL);
