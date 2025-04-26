@@ -19,14 +19,36 @@ const fetchGalleries = async () => {
   return res.json();
 };
 
+const fetchYoutubeVideo = async () => {
+  const url = new URL("/api/youtube", process.env.NEXT_PUBLIC_API_URL);
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Failed to fetch youtube video");
+  }
+
+  return res.json();
+};
+
+const convertToYoutubeEmbedUrl = (url: string) => {
+  const videoId = url.split("v=")[1];
+
+  return `https://www.youtube.com/embed/${videoId}`;
+};
+
 export default function VirtualGallery() {
   const [galleries, setGalleries] = useState<GalleryType[]>([]);
+  const [youtubeVideo, setYoutubeVideo] = useState<string | null>(null);
 
   useEffect(() => {
     async function getGalleries() {
       try {
-        const { data } = await fetchGalleries();
+        const [{ data }, { data: youtubeData }] = await Promise.all([
+          fetchGalleries(),
+          fetchYoutubeVideo(),
+        ]);
         setGalleries(data);
+
+        setYoutubeVideo(youtubeData.url || null);
       } catch (error) {
         console.error("Error fetching galleries:", error);
       }
@@ -77,14 +99,20 @@ export default function VirtualGallery() {
           </div>
         </div>
         <div className="absolute left-0 right-0 bottom-[-120px] z-30 flex items-center justify-center">
-          <iframe
-            className="rounded-lg border-4 border-white"
-            width="480"
-            height="240"
-            src="https://www.youtube.com/embed/EPO_J4yvDzs"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          />
+          <div className="w-[480px] h-[240px] bg-white rounded-lg shadow-lg overflow-hidden">
+            {youtubeVideo ? (
+              <iframe
+                className="rounded-lg border-4 border-white"
+                width="480"
+                height="240"
+                src={convertToYoutubeEmbedUrl(youtubeVideo)}
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              />
+            ) : (
+              <div className="flex items-center justify-center h-full"></div>
+            )}
+          </div>
         </div>
       </div>
       <div className="h-[120px]" />

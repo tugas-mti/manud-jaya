@@ -6,6 +6,7 @@ import ChangeStatus from "./change-status";
 import Drawer from "@/app/components/drawer";
 import { Receipt } from "@/app/components/receipt";
 import { formatCurrency } from "@/lib/utils";
+import DownloadCSVButton from "./download-button";
 
 export type Booking = Prisma.BookingGetPayload<{
   include: {
@@ -57,18 +58,21 @@ export default async function Bookingpage({
 
     const res = await fetch(url);
     if (!res.ok) {
-      throw new Error("Failed to fetch news");
+      throw new Error("Failed to fetch booking");
     }
 
     return res.json();
   }
 
-  const { data: news, meta } = await fetchBookings(currentPage);
+  const { data: bookings, meta } = await fetchBookings(currentPage);
   const totalPages = Math.ceil(meta.total / limit);
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Tour Booking</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold mb-4">Tour Booking</h1>
+        <DownloadCSVButton bookings={bookings} />
+      </div>
       <div className="overflow-x-auto">
         <Table
           columns={[
@@ -159,7 +163,7 @@ export default async function Bookingpage({
               ),
             },
           ]}
-          dataSource={news}
+          dataSource={bookings}
         />
       </div>
       <div className="mt-8 flex justify-center">

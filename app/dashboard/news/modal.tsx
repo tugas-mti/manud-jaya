@@ -14,7 +14,7 @@ import RichTextEditor from "@/app/components/rich-text-editor/editor";
 const CreateNewsSchema = z.object({
   title: z.string().min(1, "Title is required"),
   content: z.string().min(1, "Content is required"),
-  image: z.string().optional(),
+  image: z.string().min(1, "Image is required"),
   type: z.enum(["news", "event", "festival"]).optional(),
   published: z.boolean().optional(),
 });

@@ -15,8 +15,8 @@ import Upload from "@/app/components/upload";
 const CreateGallerySchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
-  image: z.string().optional(),
-  published: z.enum(["true", "false"]).transform((val) => val === "true"),
+  image: z.string().min(1, "Image is required"),
+  published: z.boolean().optional(),
 });
 
 type GalleryModalProps = {
@@ -183,8 +183,8 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
               render={({ field: { onChange, value } }) => (
                 <select
                   id="published"
-                  value={String(value)}
-                  onChange={(e) => onChange(e.target.value)}
+                  value={value ? "true" : "false"}
+                  onChange={(e) => onChange(e.target.value === "true")}
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="true">True</option>
@@ -192,6 +192,11 @@ export default function GalleryModal({ type, gallery }: GalleryModalProps) {
                 </select>
               )}
             />
+            {errors.published && (
+              <p className="mt-2 text-sm text-red-600">
+                {errors.published.message}
+              </p>
+            )}
           </div>
           <div className="flex justify-end">
             {type === "edit" && (
