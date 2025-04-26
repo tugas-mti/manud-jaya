@@ -180,17 +180,16 @@ model Accommodation {
   id                   String                 @id @default(cuid())
   name                 String
   description          String
-  location             Location               @relation(fields: [locationId], references: [id])
+  location             Location?              @relation(fields: [locationId], references: [id])
   locationId           String
-  price                Float
-  currency             String // e.g., USD, IDR
+  price                Float?
+  currency             String? // e.g., USD, IDR
   images               Image[]
   reviews              Review[]
   createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
+  updatedAt            DateTime?              @updatedAt
   BookingAccommodation BookingAccommodation[]
-
-  @@index([locationId])
+  published            Boolean                @default(false)
 }
 
 enum BookingStatus {
