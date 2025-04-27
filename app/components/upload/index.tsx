@@ -19,7 +19,7 @@ export default function Upload({ name, onChange, value }: UploadProps) {
     if (file) {
       // check the file size 2MB
       if (file.size > 2 * 1024 * 1024) {
-        toast.error("File size exceeds 1MB");
+        toast.error("File size exceeds 2MB");
         return;
       }
 
