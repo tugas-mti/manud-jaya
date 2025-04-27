@@ -79,12 +79,37 @@ export async function DELETE(
 ) {
   const id = (await params).id;
   try {
+    // clear all the relations first
+    await prisma.tour.update({
+      where: { id },
+      data: {
+        category: {
+          delete: true,
+        },
+        images: {
+          deleteMany: {},
+        },
+        activities: {
+          deleteMany: {},
+        },
+        inclusions: {
+          deleteMany: {},
+        },
+        exclusions: {
+          deleteMany: {},
+        },
+        safetyInfo: {
+          deleteMany: {},
+        },
+      },
+    });
     await prisma.tour.delete({
       where: { id },
     });
 
     return NextResponse.json({ message: "Tour deleted successfully" });
   } catch (error) {
+    console.error("Error deleting tour:", error);
     return NextResponse.json({ error: "Error deleting tour" }, { status: 500 });
   }
 }
