@@ -1,5 +1,4 @@
 import Pagination from "@/app/components/pagination";
-import RichTextEditor from "@/app/components/rich-text-editor/editor";
 import Table from "@/app/components/table";
 import { cn } from "@/lib/utils";
 import { Tour as TourType } from "@prisma/client";

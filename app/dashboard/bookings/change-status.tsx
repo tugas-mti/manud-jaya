@@ -2,6 +2,7 @@
 
 import { Dropdown } from "@/app/components/dropdown";
 import { BookingStatus } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 async function patchChangeStatus(
@@ -15,6 +16,11 @@ async function patchChangeStatus(
       "Content-Type": "application/json",
     },
   });
+
+  if (response.status === 400) {
+    const errorResponse = await response.json();
+    throw new Error(errorResponse.error);
+  }
 
   if (!response.ok) {
     throw new Error("Failed to update booking status");
@@ -32,19 +38,17 @@ export default function ChangeStatus({
   bookingId,
   onSuccess,
 }: ChangeStatusProps) {
-  const handleChangeStatus = async (status: BookingStatus) => {
-    try {
-      toast.promise(patchChangeStatus(bookingId, status), {
-        loading: "Updating status...",
-        success: () => `Status updated to ${status}`,
-        error: (error) => `Error: ${error.message}`,
-      });
+  const router = useRouter();
 
-      onSuccess?.();
-      window.location.reload();
-    } catch {
-      toast.error(`Error updating status`);
-    }
+  const handleChangeStatus = async (status: BookingStatus) => {
+    toast.promise(patchChangeStatus(bookingId, status), {
+      loading: "Updating status...",
+      success: () => `Status updated to ${status}`,
+      error: (error) => `Error: ${error.message}`,
+    });
+
+    onSuccess?.();
+    router.refresh();
   };
 
   return (

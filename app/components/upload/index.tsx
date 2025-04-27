@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
 
 interface UploadProps {
   name?: string;
@@ -16,12 +17,18 @@ export default function Upload({ name, onChange, value }: UploadProps) {
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // check the file size 2MB
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("File size exceeds 1MB");
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-      // preapare form data
+
       const formData = new FormData();
       formData.append("file", file);
 
