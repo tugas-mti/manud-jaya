@@ -53,8 +53,8 @@ export default function Home() {
         <VirtualGallery />
         <TourFeed />
         <NewsFeed />
-        <GoogleMapsReview />
         <SocialMedia/>
+        <GoogleMapsReview />
       </div>
     </>
   );
