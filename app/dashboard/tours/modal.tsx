@@ -10,6 +10,7 @@ import { PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Upload from "@/app/components/upload";
 import RichTextEditor from "@/app/components/rich-text-editor/editor";
+import { toast } from "sonner";
 
 const CreateTourSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -75,6 +76,15 @@ export default function TourModal({ type, tour }: TourModalProps) {
       const res = await fetch(`/api/tours/${tour.id}`, {
         method: "DELETE",
       });
+
+      if (res.status === 400) {
+        toast.error(
+          "Cannot delete tour with existing bookings. Please remove bookings first."
+        );
+        setIsOpen(false);
+        router.refresh();
+        return;
+      }
 
       if (!res.ok) {
         throw new Error("Failed to delete tour");

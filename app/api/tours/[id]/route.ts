@@ -79,13 +79,23 @@ export async function DELETE(
 ) {
   const id = (await params).id;
   try {
-    // clear all the relations first
+    // check booking relation
+
+    const hasBooking = await prisma.booking.findFirst({
+      where: {
+        tourId: id,
+      },
+    });
+    if (hasBooking) {
+      return NextResponse.json(
+        { error: "Cannot delete tour with existing bookings" },
+        { status: 400 }
+      );
+    }
+
     await prisma.tour.update({
       where: { id },
       data: {
-        category: {
-          delete: true,
-        },
         images: {
           deleteMany: {},
         },

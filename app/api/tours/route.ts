@@ -83,7 +83,7 @@ export async function POST(request: Request) {
         // Default values
         duration: 1440, // default to 24 hours
         slug: sluggify(body.title),
-        categoryId: "cm9fqae6p0003uoyqu1hptt7w", // predefined category ID
+        categoryId: "cm9221r1o0002uo3tm1lwf1np", // predefined category ID
         currency: "IDR",
         language: "Indonesian",
         minGuests: 1,
