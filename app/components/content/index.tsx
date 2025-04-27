@@ -17,7 +17,7 @@ const Content = ({
     <div className="container mx-auto px-4 py-12">
       <div className="min-h-[560px] grid grid-cols-1 md:grid-cols-5 gap-4">
         <div className="flex flex-col text-justify justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:col-span-2">
-          <h1 className="text-xl font-bold text-black md:text-2xl md:leading-normal">
+          <h1 className="text-xl font-bold text-black md:text-2xl md:leading-normal text-center">
             {header}
           </h1>
           <p className=" text-lg text-gray-800 md:text-xl md:leading-normal">
