@@ -3,6 +3,7 @@ import { useState ,useEffect } from 'react';
 import DetailModal from './experience/detail';
 
 type ItemData = {
+  id: number;
   title: string;
   image:string;
   description: string;
@@ -10,7 +11,8 @@ type ItemData = {
 };
 
 async function fetchAccommodations(): Promise<ItemData[]> {
-  const res = await fetch('https://www.manud-jaya.tech/api/accommodations?published=true', {
+  const url = new URL("/api/accommodations?published=true", process.env.NEXT_PUBLIC_API_URL);
+  const res = await fetch(url, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -19,9 +21,10 @@ async function fetchAccommodations(): Promise<ItemData[]> {
 
   const data = await res.json();
   const mappedData: ItemData[] = data.data.map((item: any) => ({
+    id:item.id,
     title: item.name,
     image: item.images?.[0]?.url || '', // fallback to empty string if no image
-    description: item.description,
+    description: item.description.replace(/<p>/g, '').replace(/<\/p>/g, '\n\n'),
     altText: item.images[0].altText,
   }));
 
@@ -61,13 +64,11 @@ export default function AccomodationFeed() {
             key={accommodation.id}
             className="flex-shrink-0 w-80 bg-white rounded-lg shadow-md"
           >
-            {accommodation.images.length > 0 && (
-              <img
-                src={accommodation.image}
-                alt={accommodation.altText}
-                className="h-48 w-full object-cover rounded-t-lg"
-              />
-            )}
+            <img
+              src={accommodation.image}
+              alt={accommodation.altText}
+              className="h-48 w-full object-cover rounded-t-lg"
+            />
             <div className="p-4">
               <h2 className="text-lg font-semibold mb-2">{accommodation.title}</h2>
               <div
@@ -78,13 +79,13 @@ export default function AccomodationFeed() {
               onClick={()=>setSelectedItem(accommodation)}>
               Read More
               </button>
-              {selectedItem?.title.includes('Hills') && (
-                  <DetailModal data={accommodation} onClose={() => setSelectedItem(null)} />
-              )}
             </div>
           </div>
         ))}
       </div>
+      {selectedItem && (
+          <DetailModal data={selectedItem} onClose={() => setSelectedItem(null)} />
+        )}
     </div>
   );
 }

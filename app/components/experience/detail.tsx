@@ -27,7 +27,7 @@ export default function DetailModal({ data, onClose }: DetailModalProps) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center overflow-y-auto">
       <div
         ref={modalRef}
         className="bg-white rounded-lg shadow-lg w-full max-w-xl relative p-6"
@@ -49,7 +49,17 @@ export default function DetailModal({ data, onClose }: DetailModalProps) {
                 height={180} 
                 className="rounded-md object-cover"
                 />
-            <p>{data.description.split('\n').map((line, index) => (<span key={index}>{line}<br/></span>))}</p>
+            {/* Description: Split on new lines */}
+          <div className="max-h-80 overflow-y-auto px-4">
+            <p>
+              {data.description.split('\n').map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
+          </div>
         </div>
       </div>
     </div>
