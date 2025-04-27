@@ -55,35 +55,57 @@ export default function AccomodationFeed() {
 
   return (
     <div className="px-6 py-12 container mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Manud Jaya Accommodation</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        Manud Jaya Accommodation
+      </h1>
       <div className="flex overflow-x-auto space-x-4 pb-4">
-        {items.map((accommodation: any) => (
-          <div
-            key={accommodation.id}
-            className="flex-shrink-0 w-80 bg-white rounded-lg shadow-md"
-          >
-            <img
-              src={accommodation.image}
-              alt={accommodation.altText}
-              className="h-48 w-full object-cover rounded-t-lg"
-            />
-            <div className="p-4">
-              <h2 className="text-lg font-semibold mb-2">
-                {accommodation.title}
-              </h2>
+        {loading ? (
+          <>
+            {[1, 2, 3].map((i) => (
               <div
-                className="text-sm text-gray-600 mb-3 line-clamp-3"
-                dangerouslySetInnerHTML={{ __html: accommodation.description }}
-              />
-              <button
-                className="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
-                onClick={() => setSelectedItem(accommodation)}
+                key={i}
+                className="flex-shrink-0 w-80 bg-gray-200 rounded-lg shadow-md animate-pulse"
               >
-                Read More
-              </button>
+                <div className="h-48 bg-gray-300 rounded-t-lg" />
+                <div className="p-4">
+                  <div className="h-6 bg-gray-300 rounded mb-2" />
+                  <div className="h-4 bg-gray-300 rounded mb-3" />
+                  <div className="h-8 bg-gray-300 rounded" />
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          items.map((accommodation: any) => (
+            <div
+              key={accommodation.id}
+              className="flex-shrink-0 w-80 bg-white rounded-lg shadow-md"
+            >
+              <img
+                src={accommodation.image}
+                alt={accommodation.altText}
+                className="h-48 w-full object-cover rounded-t-lg"
+              />
+              <div className="p-4">
+                <h2 className="text-lg font-semibold mb-2">
+                  {accommodation.title}
+                </h2>
+                <div
+                  className="text-sm text-gray-600 mb-3 line-clamp-3"
+                  dangerouslySetInnerHTML={{
+                    __html: accommodation.description,
+                  }}
+                />
+                <button
+                  className="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
+                  onClick={() => setSelectedItem(accommodation)}
+                >
+                  Read More
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
       {selectedItem && (
         <DetailModal
