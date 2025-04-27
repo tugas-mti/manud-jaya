@@ -43,14 +43,8 @@ export default function TourFeed() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold mb-4">Manud Jaya Tours</h1>
-        <Link
-          href="/tour"
-          className="text-sm text-gray-700 hover:text-gray-900"
-        >
-          See all tours
-        </Link>
+      <div className="mb-4">
+        <h1 className="text-3xl font-bold mb-4 text-center">the Tours</h1>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading ? (
@@ -82,6 +76,12 @@ export default function TourFeed() {
           </>
         )}
       </div>
+      <Link
+        href="/tour"
+        className="text-gray-700 hover:text-gray-900 text-center mt-8 block"
+      >
+        See all tours
+      </Link>
     </div>
   );
 }

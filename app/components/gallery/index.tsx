@@ -74,7 +74,6 @@ export default function Gallery({ photos = sample, showAlt }: GalleryProps) {
         photos={photos}
         onClick={({ index }) => setIndex(index)}
         spacing={16}
-        padding={10}
         render={{
           extras: (_, { photo }) => (showAlt ? <div>{photo.alt}</div> : null),
         }}

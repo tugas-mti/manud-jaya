@@ -11,7 +11,8 @@ import AccomodationFeed from "./components/accomodation-feed";
 export default function Home() {
   const text =
     "Manud Jaya Village is a hidden paradise in Kayangan Regency, Semesta Raya. This charming village offers vast green rice fields, lush hills, and crystal-clear rivers flowing amidst shady trees, making it the perfect escape from the hustle and bustle of the city. The cool and fresh air adds even more to the comfort.";
-  const header = "Manud Jaya Tourism Village";
+  const header = "Village Tourism";
+
   return (
     <>
       <div className="w-full ">
@@ -34,7 +35,12 @@ export default function Home() {
           <SearchBar />
         </div>
         <div className="bg-white">
-          <Content header={header} text={text} image="/images/image1.jpg" />
+          <Content
+            header={header}
+            text={text}
+            image="/images/image1.jpg"
+            secondImage="/images/image2.jpg"
+          />
         </div>
         <div className="container mx-auto px-4 py-8 flex flex-wrap gap-4 justify-center">
           {[1, 2, 3, 4, 6].map((number, index) => (
@@ -47,15 +53,17 @@ export default function Home() {
             />
           ))}
         </div>
-        <div className="px-6 py-12">
-          <h1 className="text-3xl font-bold mb-6">Manud Jaya Experiences</h1>
+        <div className="px-6 py-12 container mx-auto">
+          <h1 className="text-3xl font-bold mb-6 text-center">
+            Wonderful Experiences
+          </h1>
           <Experience />
         </div>
-        <AccomodationFeed/>
-        <VirtualGallery />
+        <AccomodationFeed />
         <TourFeed />
+        <VirtualGallery />
         <NewsFeed />
-        <SocialMedia/>
+        <SocialMedia />
         <GoogleMapsReview />
       </div>
     </>

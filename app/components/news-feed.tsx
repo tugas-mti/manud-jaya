@@ -44,15 +44,8 @@ export default function NewsFeed() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold mb-4">News on Manud Jaya</h1>
-        <Link
-          href="/news"
-          className="text-sm text-gray-700 hover:text-gray-900"
-        >
-          See all news
-        </Link>
-      </div>
+      <h1 className="text-3xl font-bold mb-4 text-center">News & Event</h1>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading ? (
           <>
@@ -102,6 +95,12 @@ export default function NewsFeed() {
           </>
         )}
       </div>
+      <Link
+        href="/news"
+        className="text-sm text-gray-700 hover:text-gray-900 mt-4 block text-center"
+      >
+        See all news
+      </Link>
     </div>
   );
 }

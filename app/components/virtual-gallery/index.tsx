@@ -8,7 +8,7 @@ import { Gallery as GalleryType } from "@prisma/client";
 const fetchGalleries = async () => {
   const url = new URL("/api/galleries", process.env.NEXT_PUBLIC_API_URL);
   url.searchParams.append("page", "1");
-  url.searchParams.append("limit", "5");
+  url.searchParams.append("limit", "4");
   url.searchParams.append("published", "true");
 
   const res = await fetch(url);

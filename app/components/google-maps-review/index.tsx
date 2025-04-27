@@ -92,7 +92,7 @@ async function GoogleMapsReview() {
   return (
     <div className="bg-gray-100">
       <div className="container mx-auto p-4 space-y-8">
-        <h2 className="text-3xl font-bold mb-8">Review your experiences</h2>
+        <h2 className="text-3xl font-bold mb-8 text-center">Our Review</h2>
         <GoogleRatingCard />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
