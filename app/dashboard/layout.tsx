@@ -29,6 +29,10 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/tours",
     text: "Tour",
   },
+  {
+    href: "/dashboard/accommodation",
+    text: "Accommodation",
+  },
 ];
 
 export default async function Layout({ children }: PropsWithChildren) {

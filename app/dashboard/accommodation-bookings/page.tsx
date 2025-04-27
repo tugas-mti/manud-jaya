@@ -113,7 +113,7 @@ export default async function Bookingpage({
                       </span>
                       <p className="text-gray-500">
                         {record.numberOfGuests} x{" "}
-                        {formatCurrency(record.accommodation.price)}
+                        {formatCurrency(record.accommodation.price ?? 0)}
                       </p>
                     </div>
                   </div>
@@ -171,7 +171,7 @@ export default async function Bookingpage({
                       status: record.status,
                       tour: {
                         title: record.accommodation.name,
-                        price: record.accommodation.price,
+                        price: record.accommodation.price ?? 0,
                         duration:
                           new Date(record.checkOutDate).getTime() -
                           new Date(record.checkInDate).getTime(),

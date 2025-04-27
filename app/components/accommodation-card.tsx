@@ -86,7 +86,7 @@ export default function AccommodationCard({
         {/* Location */}
         <div className="mb-4 flex items-center gap-1 text-sm text-gray-600">
           <MapPin className="h-4 w-4" />
-          <span>{accommodation.location.name}, Indonesia</span>
+          <span>{accommodation.location?.name}, Indonesia</span>
         </div>
 
         {/* Divider */}
@@ -96,7 +96,10 @@ export default function AccommodationCard({
         <div className="flex items-center justify-between">
           <div className="text-left">
             <span className="block text-xl font-bold text-green-600">
-              {formatPrice(accommodation.price, accommodation.currency)}
+              {formatPrice(
+                accommodation.price ?? 0,
+                accommodation.currency || "IDR"
+              )}
             </span>
             <span className="text-xs text-gray-500">/person per night</span>
           </div>

@@ -46,7 +46,7 @@ export async function POST(
     }
 
     // Calculate total price
-    const totalPrice = accommodation.price * body.guests;
+    const totalPrice = accommodation.price ?? 0 * body.guests;
 
     // Create booking
     const booking = await prisma.bookingAccommodation.create({

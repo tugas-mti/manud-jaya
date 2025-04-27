@@ -179,7 +179,10 @@ export default function AccommodationBooking({
 
           <div className="mb-4 text-center">
             <div className="text-xl font-bold text-green-600">
-              {formatPrice(accommodation.price, accommodation.currency)}
+              {formatPrice(
+                accommodation.price ?? 0,
+                accommodation.currency || "IDR"
+              )}
               <span className="text-sm text-gray-500">/person/night</span>
             </div>
           </div>

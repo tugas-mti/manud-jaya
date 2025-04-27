@@ -16,13 +16,16 @@ const DownloadCSVButton = ({ bookings }: DownloadCSVButtonProps) => {
         tour_title: booking.tour.title,
         tour_price: booking.tour.price,
       };
-
+      /** @ts-ignore */
       delete newValue.user;
+
+      /** @ts-ignore */
       delete newValue.tour;
 
       return newValue;
     });
 
+    /** @ts-ignore */
     downloadCSV(exported);
   };
 
